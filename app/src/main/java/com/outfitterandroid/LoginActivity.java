@@ -1,17 +1,23 @@
 package com.outfitterandroid;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.parse.ParseUser;
 
-public class LoginActivity extends ActionBarActivity {
+
+public class LoginActivity extends Activity {
+
+    private ParseUser mCurrentUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
     }
 
 
