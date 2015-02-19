@@ -11,7 +11,7 @@
     <application
         android:name=".OutfitterApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/mdpi_outfitter_belt_logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ProfileActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
