@@ -16,6 +16,14 @@
             android:id="@+id/profile_logout_button"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_user_button_text"
+            android:id="@+id/profile_delete_user_button"
+            android:layout_below="@+id/profile_logout_button"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
 </RelativeLayout>

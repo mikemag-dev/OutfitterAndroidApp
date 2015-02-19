@@ -21,30 +21,50 @@ public class ProfileActivity extends Activity {
 
     private ParseUser mCurrentUser;
     private Button mLogoutButton;
+    private Button mDeleteUserButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-     mLogoutButton = (Button) findViewById(R.id.profile_logout_button);
+        mLogoutButton = (Button) findViewById(R.id.profile_logout_button);
+        mDeleteUserButton = (Button) findViewById(R.id.profile_delete_user_button);
 
-     mLogoutButton.setOnClickListener(new View.OnClickListener() {
+        mLogoutButton.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
              if(mCurrentUser != null){
                  ParseUser.logOut();
+                 mCurrentUser = null;
                  Intent intent = new Intent(ProfileActivity.this, LoginDispatchActivity.class);
                  intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                  startActivity(intent);
                  finish();
-                 getString(R.string.logout_text);
              }
              else{
                  Log.d(TAG, "Showing logged in page, but no user logged in");
              }
          }
-     });
+        });
+
+        mDeleteUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mCurrentUser != null){
+                    mCurrentUser.deleteInBackground();
+                    ParseUser.logOut();
+                    mCurrentUser = null;
+                    Intent intent = new Intent(ProfileActivity.this, LoginDispatchActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    Log.d(TAG, "Showing logged in page, but no user logged in");
+                }
+            }
+        });
     }
 
     @Override
