@@ -1,5 +1,7 @@
 package com.outfitterandroid;
 
+import com.parse.ParseFile;
+
 import java.util.Date;
 
 /**
@@ -14,7 +16,7 @@ public class Submission {
     public final static int SHOES = 4;
 
     private String mUsername;
-    private byte[] mImage;
+    private ParseFile mImage;
     private Date mCreatedAt;
     private int mNumLikes;
     private int mNumDislikes;
@@ -31,11 +33,11 @@ public class Submission {
         this.mUsername = mUsername;
     }
 
-    public byte[] getImage() {
+    public ParseFile getImage() {
         return mImage;
     }
 
-    public void setImage(byte[] mImage) {
+    public void setImage(ParseFile mImage) {
         this.mImage = mImage;
     }
 

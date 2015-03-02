@@ -2,26 +2,34 @@ package com.outfitterandroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseUser;
-import com.parse.ui.ParseLoginBuilder;
-import com.parse.ui.ParseLoginDispatchActivity;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class ProfileActivity extends Activity {
 
+    public static final String EXTRA_SUBMISSION_BUNDLE = "com.outfitterandroid.submission_photo";
+
     private static final String TAG = "ProfileActivity";
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
+    private static final int SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE = 2;
 
     private ParseUser mCurrentUser;
+
     private Button mLogoutButton;
     private Button mDeleteUserButton;
+    private Button mCapturePhotoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,7 @@ public class ProfileActivity extends Activity {
 
         mLogoutButton = (Button) findViewById(R.id.profile_logout_button);
         mDeleteUserButton = (Button) findViewById(R.id.profile_delete_user_button);
+        mCapturePhotoButton = (Button) findViewById(R.id.capture_photo_button);
 
         mLogoutButton.setOnClickListener(new View.OnClickListener() {
          @Override
@@ -65,6 +74,56 @@ public class ProfileActivity extends Activity {
                 }
             }
         });
+
+        mCapturePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Performing this check is important because if you call startActivityForResult()
+                // using an intent that no app can handle, your app will crash. So as long as the
+                // result is not null, it's safe to use the intent.
+                if(cameraIntent.resolveActivity(getPackageManager()) != null){
+                    startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data == null){
+            Log.d(TAG, "Returned to profile with no data");
+        }
+        switch (requestCode){
+            case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
+                if(resultCode == Activity.RESULT_OK){
+                    Toast.makeText(this, "Image saved to:\n" +   data.getData(), Toast.LENGTH_LONG).show();
+                    Bundle extras = data.getExtras();
+//                    Bitmap photoBitmap = (Bitmap) extras.get("data");
+//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                    photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                    byte[] photoByteArray = stream.toByteArray();
+                    Intent submissionIntent = new Intent(ProfileActivity.this, SubmissionActivity.class);
+                    submissionIntent.putExtra(ProfileActivity.EXTRA_SUBMISSION_BUNDLE, extras);
+                    startActivityForResult(submissionIntent, SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE);
+                }
+            case SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE:
+                if(resultCode == Activity.RESULT_OK){
+                    Toast.makeText(this, "File successfully submitted!", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    //Performing this check is important because if you call startActivityForResult()
+                    // using an intent that no app can handle, your app will crash. So as long as the
+                    // result is not null, it's safe to use the intent.
+                    if(cameraIntent.resolveActivity(getPackageManager()) != null){
+                        startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                    }
+                }
+
+        }
+
     }
 
     @Override
