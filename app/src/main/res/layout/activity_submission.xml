@@ -1,11 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:id="@+id/submission_photo_view"
         android:layout_gravity="center_horizontal" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RadioGroup
+                android:id="@+id/article_selection_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/article_selection_option_header_text"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/article_selection_option_full_outfit_text"
+                        android:layout_marginLeft="30dp"
+                        android:checked="true"
+                        android:id="@+id/article_selection_option_full_outfit_radio_button"
+                        android:layout_weight="1" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/article_selection_option_top_text"
+                        android:id="@+id/article_selection_option_top_radio_button"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="1" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/article_selection_option_bottom_text"
+                        android:id="@+id/article_selection_option_botton_radio_button"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="1" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/article_selection_option_shoes_text"
+                        android:id="@+id/article_selection_option_shoes_radio_button"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="1" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/article_selection_option_accessory_text"
+                        android:id="@+id/article_selection_option_accessory_radio_button"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="1" />
+                </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/audience_selection_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:layout_below="@+id/article_selection_radio_group"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/audience_selection_option_header_text"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/audience_selection_option_both_text"
+                    android:id="@+id/audience_selection_option_both_radio_button"
+                    android:layout_marginLeft="30dp"
+                    android:checked="true"
+                    android:layout_weight="1" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/audience_selection_option_male_text"
+                    android:id="@+id/audience_selection_option_male_radio_button"
+                    android:layout_marginLeft="30dp"
+                    android:layout_weight="1" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/audience_selection_option_female_text"
+                    android:id="@+id/audience_selection_option_female_radio_button"
+                    android:layout_marginLeft="30dp"
+                    android:layout_weight="1" />
+            </RadioGroup>
+
+            </LinearLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp">
+
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/is_priority_check_box_text"
+                android:id="@+id/is_priority_submission_check_box"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="30dp" />
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/submission_description"
+                android:layout_below="@+id/is_priority_submission_check_box"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/submission_description_prompt" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit"
+                android:id="@+id/submit_submission_button"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned"
+                android:ems="10"
+                android:id="@+id/editText"
+                android:layout_below="@+id/submission_description"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
 </LinearLayout>
