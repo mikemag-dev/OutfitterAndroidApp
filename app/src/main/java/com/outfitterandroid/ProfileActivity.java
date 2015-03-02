@@ -16,7 +16,6 @@ import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
 
-
 public class ProfileActivity extends Activity {
 
     public static final String EXTRA_SUBMISSION_BUNDLE = "com.outfitterandroid.submission_photo";
@@ -40,7 +39,28 @@ public class ProfileActivity extends Activity {
         mDeleteUserButton = (Button) findViewById(R.id.profile_delete_user_button);
         mCapturePhotoButton = (Button) findViewById(R.id.capture_photo_button);
 
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+        mLogoutButton.setOnClickListener(logoutUser());
+        mDeleteUserButton.setOnClickListener(logoutAndDeleteUser());
+        mCapturePhotoButton.setOnClickListener(launchCapturePhotoActivityForResult());
+    }
+
+    private View.OnClickListener launchCapturePhotoActivityForResult() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                //Performing this check is important because if you call startActivityForResult()
+                // using an intent that no app can handle, your app will crash. So as long as the
+                // result is not null, it's safe to use the intent.
+                if(cameraIntent.resolveActivity(getPackageManager()) != null){
+                    startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener logoutUser() {
+        return new View.OnClickListener() {
          @Override
          public void onClick(View v) {
              if(mCurrentUser != null){
@@ -55,9 +75,11 @@ public class ProfileActivity extends Activity {
                  Log.d(TAG, "Showing logged in page, but no user logged in");
              }
          }
-        });
+        };
+    }
 
-        mDeleteUserButton.setOnClickListener(new View.OnClickListener() {
+    private View.OnClickListener logoutAndDeleteUser() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mCurrentUser != null){
@@ -73,20 +95,7 @@ public class ProfileActivity extends Activity {
                     Log.d(TAG, "Showing logged in page, but no user logged in");
                 }
             }
-        });
-
-        mCapturePhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //Performing this check is important because if you call startActivityForResult()
-                // using an intent that no app can handle, your app will crash. So as long as the
-                // result is not null, it's safe to use the intent.
-                if(cameraIntent.resolveActivity(getPackageManager()) != null){
-                    startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                }
-            }
-        });
+        };
     }
 
     @Override
@@ -96,6 +105,7 @@ public class ProfileActivity extends Activity {
             Log.d(TAG, "Returned to profile with no data");
         }
         switch (requestCode){
+            //if successfully captured photo, launch submission activity with photo as an extra
             case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
                 if(resultCode == Activity.RESULT_OK){
                     Toast.makeText(this, "Image saved to:\n" +   data.getData(), Toast.LENGTH_LONG).show();
@@ -108,9 +118,12 @@ public class ProfileActivity extends Activity {
                     submissionIntent.putExtra(ProfileActivity.EXTRA_SUBMISSION_BUNDLE, extras);
                     startActivityForResult(submissionIntent, SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE);
                 }
+
+            //if successfully submitted submission, launch portfolio activity
             case SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE:
                 if(resultCode == Activity.RESULT_OK){
                     Toast.makeText(this, "File successfully submitted!", Toast.LENGTH_LONG).show();
+                    //launch portfolio activity here
                 }
                 else{
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
