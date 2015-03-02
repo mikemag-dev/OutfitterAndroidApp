@@ -10,6 +10,19 @@
     <string name="logout_text">Logout</string>
     <string name="camera_button_text">Take Picture</string>
     <string name="delete_user_button_text">Delete User</string>
+    <string name="is_priority_check_box_text">Make this my priority submission</string>
+    <string name="article_selection_option_full_outfit_text">Full Outfit</string>
+    <string name="article_selection_option_top_text">Top</string>
+    <string name="article_selection_option_bottom_text">Bottom</string>
+    <string name="article_selection_option_shoes_text">Shoes</string>
+    <string name="article_selection_option_accessory_text">Accessory</string>
+    <string name="audience_selection_option_both_text">Guys + Girls</string>
+    <string name="audience_selection_option_male_text">Guys</string>
+    <string name="audience_selection_option_female_text">Girls</string>
+    <string name="article_selection_option_header_text">Article</string>
+    <string name="audience_selection_option_header_text">Audience</string>
+    <string name="submission_description_prompt">Add a description</string>
+    <string name="submit">Submit</string>
     <string-array
         name="my_facebook_permissions">
         <item>public_profile</item>
