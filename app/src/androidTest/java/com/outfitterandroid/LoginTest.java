@@ -29,7 +29,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static java.lang.Thread.sleep;;
+import static java.lang.Thread.sleep;
 
 
 public class LoginTest extends ActivityInstrumentationTestCase2 {
@@ -51,7 +51,7 @@ public class LoginTest extends ActivityInstrumentationTestCase2 {
     public void testLoginWithFacebook() throws InterruptedException {
         //facebook login is a web service that idles, non-thread-safe testing issues
         onView(withId(R.id.facebook_login)).perform(click());
-        Thread.sleep(500);
+        Thread.sleep(1000);
         onView(withId(R.id.profile_logout_button)).check(matches(withText("Logout")));
         onView(withId(R.id.profile_logout_button)).perform(click());
 
