@@ -23,6 +23,7 @@
     <string name="audience_selection_option_header_text">Audience</string>
     <string name="submission_description_prompt">Add a description</string>
     <string name="submit">Submit</string>
+    <string name="portfolio_button_text">Portfolio</string>
     <string-array
         name="my_facebook_permissions">
         <item>public_profile</item>
