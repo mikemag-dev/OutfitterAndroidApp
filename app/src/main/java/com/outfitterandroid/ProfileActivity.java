@@ -83,7 +83,7 @@ public class ProfileActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if(mCurrentUser != null){
-                    mCurrentUser.deleteInBackground();
+                    User.deleteUser(mCurrentUser);
                     ParseUser.logOut();
                     mCurrentUser = null;
                     Intent intent = new Intent(ProfileActivity.this, LoginDispatchActivity.class);
@@ -118,6 +118,7 @@ public class ProfileActivity extends Activity {
                     submissionIntent.putExtra(ProfileActivity.EXTRA_SUBMISSION_BUNDLE, extras);
                     startActivityForResult(submissionIntent, SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE);
                 }
+                break;
 
             //if successfully submitted submission, launch portfolio activity
             case SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE:
@@ -134,6 +135,7 @@ public class ProfileActivity extends Activity {
                         startActivityForResult(cameraIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
                     }
                 }
+                break;
 
         }
 
