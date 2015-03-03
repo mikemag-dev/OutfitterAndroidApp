@@ -29,6 +29,7 @@ public class ProfileActivity extends Activity {
     private Button mLogoutButton;
     private Button mDeleteUserButton;
     private Button mCapturePhotoButton;
+    private Button mPortfolioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,17 @@ public class ProfileActivity extends Activity {
         mLogoutButton = (Button) findViewById(R.id.profile_logout_button);
         mDeleteUserButton = (Button) findViewById(R.id.profile_delete_user_button);
         mCapturePhotoButton = (Button) findViewById(R.id.capture_photo_button);
+        mPortfolioButton = (Button) findViewById(R.id.portfolio_open_button);
 
         mLogoutButton.setOnClickListener(logoutUser());
         mDeleteUserButton.setOnClickListener(logoutAndDeleteUser());
         mCapturePhotoButton.setOnClickListener(launchCapturePhotoActivityForResult());
+        mPortfolioButton.setOnClickListener(launchPortfolio());
+    }
+
+    //TODO
+    private View.OnClickListener launchPortfolio() {
+        return null;
     }
 
     private View.OnClickListener launchCapturePhotoActivityForResult() {
