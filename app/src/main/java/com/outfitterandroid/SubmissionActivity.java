@@ -48,7 +48,6 @@ public class SubmissionActivity extends Activity {
         mCurrentUser = ParseUser.getCurrentUser();
 
         //set image view and checkboxes
-
         Bitmap capturedImage = (Bitmap) getIntent()
                 .getBundleExtra(ProfileActivity.EXTRA_SUBMISSION_BUNDLE)
                 .get("data");
@@ -56,22 +55,59 @@ public class SubmissionActivity extends Activity {
         mIsPriorityCheckBox.setChecked(!User.hasSubmittedPrioritySubmissionToday(mCurrentUser));
 
         //build submission
-
         mCurrentSubmission = new Submission();
+        mCurrentSubmission.setSubmittedByUser(mCurrentUser.getObjectId());
         mCurrentSubmission.setIsPrioritySubmission(!User.hasSubmittedPrioritySubmissionToday(mCurrentUser));
-        //mCurrentSubmission.addImage(capturedImage);
         mCurrentSubmission.setImage(capturedImage);
 
         //set button listeners
 
-        mArticleRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        mArticleRadioGroup.setOnCheckedChangeListener(updateSubmissionArticle());
+        mAudienceRadioGroup.setOnCheckedChangeListener(updateSubmissionAudience());
+        mIsPriorityCheckBox.setOnCheckedChangeListener(updateSubmissionIsPrioritySubmission());
+        mSubmitButton.setOnClickListener(submitSubmission());
+    }
+
+    private RadioGroup.OnCheckedChangeListener updateSubmissionArticle() {
+        return new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 mCurrentSubmission.setArticle(group.indexOfChild(findViewById(checkedId)) - 1);
             }
-        });
+        };
+    }
 
-        mAudienceRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+    private View.OnClickListener submitSubmission() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User.submitSubmission(mCurrentUser, mCurrentSubmission);
+                setResult(RESULT_OK);
+                finish();
+            }
+        };
+    }
+
+    private CompoundButton.OnCheckedChangeListener updateSubmissionIsPrioritySubmission() {
+        return new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("wtwtf", Boolean.toString(User.hasSubmittedPrioritySubmissionToday(mCurrentUser)));
+                if(isChecked && User.hasSubmittedPrioritySubmissionToday(mCurrentUser)){
+                    Toast.makeText(SubmissionActivity.this, ALREADY_SUBMITTED_PRIORITY_SUBMISSION_TODAY, Toast.LENGTH_SHORT)
+                            .show();
+                    buttonView.setChecked(false);
+                }
+                else
+                {
+                    mCurrentSubmission.setIsPrioritySubmission(isChecked);
+                }
+            }
+        };
+    }
+
+    private RadioGroup.OnCheckedChangeListener updateSubmissionAudience() {
+        return new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (group.indexOfChild(findViewById(checkedId))){
@@ -89,33 +125,6 @@ public class SubmissionActivity extends Activity {
                         break;
                 }
             }
-        });
-
-        mIsPriorityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("wtwtf", Boolean.toString(User.hasSubmittedPrioritySubmissionToday(mCurrentUser)));
-                if(isChecked && User.hasSubmittedPrioritySubmissionToday(mCurrentUser)){
-                    Toast.makeText(SubmissionActivity.this, ALREADY_SUBMITTED_PRIORITY_SUBMISSION_TODAY, Toast.LENGTH_SHORT)
-                            .show();
-                    buttonView.setChecked(false);
-                }
-                else
-                {
-                    mCurrentSubmission.setIsPrioritySubmission(isChecked);
-                }
-            }
-        });
-
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                User.submitSubmission(mCurrentUser, mCurrentSubmission);
-                setResult(RESULT_OK);
-                finish();
-            }
-        });
-
-
+        };
     }
 }
