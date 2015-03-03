@@ -1,7 +1,10 @@
 package com.outfitterandroid;
 
+import android.graphics.Bitmap;
+
 import com.parse.ParseFile;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -15,31 +18,31 @@ public class Submission {
     public final static int BOTTOM = 3;
     public final static int SHOES = 4;
 
-    private String mUsername;
-    private ParseFile mImage;
+    //private ArrayList<Bitmap> mImageList;
+    private String mSubmittedByUser;
+    private Bitmap mImage;
     private Date mCreatedAt;
     private int mNumLikes;
     private int mNumDislikes;
     private int mArticle;
     private boolean mIsPrioritySubmission;
-    private boolean mToReceiveMaleFeedback;
-    private boolean mToReceiveFemaleFeedback;
+    private boolean mToReceiveMaleFeedback = true;
+    private boolean mToReceiveFemaleFeedback = true;
 
-    public String getUsername() {
-        return mUsername;
+    /*public ArrayList<Bitmap> getImageList() {
+        return mImageList;
     }
 
-    public void setUsername(String mUsername) {
-        this.mUsername = mUsername;
+    public void setImageList(ArrayList<Bitmap> mImageList) {
+        this.mImageList = mImageList;
     }
 
-    public ParseFile getImage() {
-        return mImage;
-    }
-
-    public void setImage(ParseFile mImage) {
-        this.mImage = mImage;
-    }
+    public void addImage(Bitmap mImage) {
+        if (null == mImage){
+            mImageList = new ArrayList<Bitmap>();
+        }
+        mImageList.add(mImage);
+    }*/
 
     public Date getCreatedAt() {
         return mCreatedAt;
@@ -73,7 +76,7 @@ public class Submission {
         this.mArticle = mArticle;
     }
 
-    public boolean isIsPrioritySubmission() {
+    public boolean isPrioritySubmission() {
         return mIsPrioritySubmission;
     }
 
@@ -97,5 +100,20 @@ public class Submission {
         this.mToReceiveFemaleFeedback = mToReceiveFemaleFeedback;
     }
 
+    public Bitmap getImage() {
+        return mImage;
+    }
+
+    public void setImage(Bitmap mImage) {
+        this.mImage = mImage;
+    }
+
+    public String getSubmittedByUser() {
+        return mSubmittedByUser;
+    }
+
+    public void setSubmittedByUser(String mSubmittedByUser) {
+        this.mSubmittedByUser = mSubmittedByUser;
+    }
 }
 
