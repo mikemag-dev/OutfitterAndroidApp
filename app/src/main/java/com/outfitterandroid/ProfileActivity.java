@@ -141,6 +141,8 @@ public class ProfileActivity extends Activity {
                 if(resultCode == Activity.RESULT_OK){
                     Toast.makeText(this, "File successfully submitted!", Toast.LENGTH_LONG).show();
                     //launch portfolio activity here
+                    Intent portfolioIntent = new Intent(ProfileActivity.this, PortfolioActivity.class);
+                    startActivity(portfolioIntent);
                 }
                 else{
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
