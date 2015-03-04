@@ -49,7 +49,15 @@ public class ProfileActivity extends Activity {
 
     //TODO
     private View.OnClickListener launchPortfolio() {
-        return null;
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent portfolioIntent = new Intent(ProfileActivity.this, PortfolioActivity.class);
+                if(portfolioIntent.resolveActivity(getPackageManager()) != null){
+                    ProfileActivity.this.startActivity(portfolioIntent);
+                }
+            }
+        };
     }
 
     private View.OnClickListener launchCapturePhotoActivityForResult() {
