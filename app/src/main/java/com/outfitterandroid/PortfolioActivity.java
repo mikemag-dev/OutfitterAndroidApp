@@ -29,13 +29,14 @@ public class PortfolioActivity extends Activity{
 
     private static final String TAG = "PortfolioActivity";
 
+
     //TODO
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portfolio);
 
         GridView gridview = (GridView) findViewById(R.id.portfolio_view);
-
+        gridview.setAdapter(new GridAdapter(this,getImageFiles(50)));
         //ArrayList<Bitmap> test = getThumbnails(5, new Date());
         //test = null;
     }
@@ -85,5 +86,45 @@ public class PortfolioActivity extends Activity{
             }
         });
         return thumbnails;
+    }
+    /*****************
+     PLEASE READ
+     This function seems to successfully query and receive results, however
+     the "thumbnails" temporary variable is not getting Bitmaps added to it.
+
+     I did not find out about the Parse query adapter until it was too late but that
+     seems to be the better approach.
+     *****************/
+    private ArrayList<String> getImageFiles(int max){
+        final ArrayList<String> imageFiles = new ArrayList<>();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Submission");
+        //perhaps not get in background? maybe halt the UI thread before this?
+        query.whereEqualTo("submittedByUser", ParseUser.getCurrentUser().getObjectId());
+
+        query.orderByDescending("updatedAt");
+        query.setLimit(max);
+        try {
+            Log.d(TAG, "count: " + Integer.toString(query.count()));
+        }
+        catch (ParseException pe){
+            Log.d(TAG, "mulitple image query not working right");
+        }
+        //do something with local datastore to make it faster
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if(e != null){
+                    Log.d(TAG, "mulitple image query not working right");
+                }
+
+                for (ParseObject p : parseObjects){
+
+                        imageFiles.add(p.getParseFile("image").getUrl());
+
+                }
+            }
+        });
+        return imageFiles;
     }
 }
