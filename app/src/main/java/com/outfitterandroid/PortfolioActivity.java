@@ -111,20 +111,18 @@ public class PortfolioActivity extends Activity{
             Log.d(TAG, "mulitple image query not working right");
         }
         //do something with local datastore to make it faster
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if(e != null){
-                    Log.d(TAG, "mulitple image query not working right");
-                }
+        try {
+           List<ParseObject> objects= query.find();
+           for (ParseObject p: objects)
+           {
+               imageFiles.add(p.getParseFile("image").getUrl());
+           }
+        }
+        catch (ParseException e)
+        {
+            Log.d(TAG, "query cant run");
+        }
 
-                for (ParseObject p : parseObjects){
-
-                        imageFiles.add(p.getParseFile("image").getUrl());
-
-                }
-            }
-        });
         return imageFiles;
     }
 }

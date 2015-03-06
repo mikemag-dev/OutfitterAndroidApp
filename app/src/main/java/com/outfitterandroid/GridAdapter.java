@@ -63,13 +63,15 @@ public class GridAdapter extends BaseAdapter{
 
         rowView = inflater.inflate(R.layout.grid_element,null );
         ImageView imageView=(ImageView) rowView.findViewById(R.id.imageView1);
+        Log.d(TAG, urlList.get(position));
         Picasso.with(context)
                 .load(urlList.get(position))
                 .into(imageView);
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "You Clicked "+position, Toast.LENGTH_LONG).show();
+                // for testing purposes only
+                //Toast.makeText(context, "You Clicked "+position, Toast.LENGTH_LONG).show();
             }
         });
 
