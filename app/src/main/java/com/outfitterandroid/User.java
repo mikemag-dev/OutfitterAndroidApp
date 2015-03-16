@@ -22,7 +22,29 @@ import java.util.GregorianCalendar;
  */
 public class User {
     private static final String TAG = "User";
-    //public static
+
+    public static void submitVote(ParseUser user, ParseObject submission, boolean liked){
+        ArrayList<String> userVotedOnIDList = (ArrayList) user.getList("votedOnIDList");
+        userVotedOnIDList.add(submission.getObjectId());
+        user.put("votedOnIDList", userVotedOnIDList);
+
+        if (liked){
+            submission.put("numLikes", ((int) submission.get("numLikes")) + 1);
+        }
+        else {
+            submission.put("numDislikes", ((int) submission.get("numDislikes")) + 1);
+        }
+
+        try{
+            submission.saveInBackground();
+            user.save();
+        }
+        catch (ParseException e){
+
+            Log.d(TAG, "vote did not submit");
+        }
+    }
+
 
     /**
      *
@@ -78,8 +100,6 @@ public class User {
         catch (ParseException e){
             Log.d(TAG, "submit did not save");
         }
-
-
     }
 
     /**
