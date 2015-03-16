@@ -94,8 +94,7 @@ public class SubmissionActivity extends Activity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Log.d("wtwtf", Boolean.toString(User.hasSubmittedPrioritySubmissionToday(mCurrentUser)));
                 if(isChecked && User.hasSubmittedPrioritySubmissionToday(mCurrentUser)){
-                    Toast.makeText(SubmissionActivity.this, ALREADY_SUBMITTED_PRIORITY_SUBMISSION_TODAY, Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(SubmissionActivity.this, ALREADY_SUBMITTED_PRIORITY_SUBMISSION_TODAY, Toast.LENGTH_SHORT).show();
                     buttonView.setChecked(false);
                 }
                 else
