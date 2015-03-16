@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/camera_button_text"
-            android:id="@+id/capture_photo_button"
+            android:id="@+id/profile_capture_image_button"
             android:layout_alignParentBottom="true"
             android:layout_alignLeft="@+id/profile_delete_user_button"
             android:layout_alignStart="@+id/profile_delete_user_button"
@@ -39,10 +39,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/portfolio_button_text"
-            android:id="@+id/portfolio_open_button"
+            android:id="@+id/profile_portfolio_button"
             android:layout_above="@+id/profile_logout_button"
             android:layout_alignRight="@+id/profile_logout_button"
             android:layout_alignEnd="@+id/profile_logout_button" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/discovery_button_text"
+            android:id="@+id/profile_discovery_button"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 
