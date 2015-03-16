@@ -2,13 +2,17 @@ package com.outfitterandroid;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -17,6 +21,8 @@ import java.util.GregorianCalendar;
  * Created by MaguireM on 3/2/15.
  */
 public class User {
+    private static final String TAG = "User";
+    //public static
 
     /**
      *
@@ -62,30 +68,19 @@ public class User {
         ParseFile image = new ParseFile("submissionImage.png", byteArray);
         image.saveInBackground();
         submission.put("image", image);
-        submission.saveInBackground();
-
-        //add to user's submissions
-        addToSubmissionsList(user, submission.getObjectId());
-
-        if(mCurrentSubmission.isPrioritySubmission()){
-            User.updateLastPrioritySubmission(user);
+        try{
+            submission.save();
+            addToSubmissionsList(user, submission.getObjectId());
+            if(mCurrentSubmission.isPrioritySubmission()){
+                User.updateLastPrioritySubmission(user);
+            }
         }
-    }
+        catch (ParseException e){
+            Log.d(TAG, "submit did not save");
+        }
 
-    private static void updateLastPrioritySubmission(ParseUser user) {
-        String currentUserObjectId = user.getObjectId();
-        user.put("lastPrioritySubmission", new Date());
-        user.saveInBackground();
-    }
 
-    private static void addToSubmissionsList(ParseUser user, String submissionObjectId){
-        ArrayList<String> curSubmissionIDList = (ArrayList) user.getList("submissionIDList");
-        if(curSubmissionIDList == null) curSubmissionIDList = new ArrayList<>();
-        curSubmissionIDList.add(submissionObjectId);
-        user.put("submissionIDList", curSubmissionIDList);
-        user.saveInBackground();
     }
-
 
     /**
      * deletes user account
@@ -101,5 +96,19 @@ public class User {
      */
     public static void deleteAssociatedData (ParseUser user){
         //to be implemented
+    }
+
+    private static void updateLastPrioritySubmission(ParseUser user) {
+        String currentUserObjectId = user.getObjectId();
+        user.put("lastPrioritySubmission", new Date());
+        user.saveInBackground();
+    }
+
+    private static void addToSubmissionsList(ParseUser user, String submissionObjectId){
+        ArrayList<String> curSubmissionIDList = (ArrayList) user.getList("submissionIDList");
+        if(curSubmissionIDList == null) curSubmissionIDList = new ArrayList<>();
+        curSubmissionIDList.add(submissionObjectId);
+        user.put("submissionIDList", Arrays.asList(curSubmissionIDList));
+        user.saveInBackground();
     }
 }
