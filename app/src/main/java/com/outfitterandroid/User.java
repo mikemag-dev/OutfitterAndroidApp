@@ -2,13 +2,11 @@ package com.outfitterandroid;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
