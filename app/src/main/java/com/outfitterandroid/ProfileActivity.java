@@ -2,7 +2,6 @@ package com.outfitterandroid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -13,8 +12,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.ParseUser;
-
-import java.io.ByteArrayOutputStream;
 
 public class ProfileActivity extends Activity {
 
@@ -28,8 +25,9 @@ public class ProfileActivity extends Activity {
 
     private Button mLogoutButton;
     private Button mDeleteUserButton;
-    private Button mCapturePhotoButton;
+    private Button mCaptureImageButton;
     private Button mPortfolioButton;
+    private Button mDiscoveryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +36,32 @@ public class ProfileActivity extends Activity {
 
         mLogoutButton = (Button) findViewById(R.id.profile_logout_button);
         mDeleteUserButton = (Button) findViewById(R.id.profile_delete_user_button);
-        mCapturePhotoButton = (Button) findViewById(R.id.capture_photo_button);
-        mPortfolioButton = (Button) findViewById(R.id.portfolio_open_button);
+        mCaptureImageButton = (Button) findViewById(R.id.profile_capture_image_button);
+        mPortfolioButton = (Button) findViewById(R.id.profile_portfolio_button);
+        mDiscoveryButton = (Button) findViewById(R.id.profile_discovery_button);
 
         mLogoutButton.setOnClickListener(logoutUser());
         mDeleteUserButton.setOnClickListener(logoutAndDeleteUser());
-        mCapturePhotoButton.setOnClickListener(launchCapturePhotoActivityForResult());
+        mCaptureImageButton.setOnClickListener(launchCapturePhotoActivityForResult());
         mPortfolioButton.setOnClickListener(launchPortfolio());
+        mDiscoveryButton.setOnClickListener(launchDiscovery());
+
+    }
+
+    private View.OnClickListener launchDiscovery() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent discoveryIntent = new Intent(ProfileActivity.this, DiscoveryActivity.class);
+
+                if(false){
+
+                }
+                else if(discoveryIntent.resolveActivity(getPackageManager()) != null){
+                    ProfileActivity.this.startActivity(discoveryIntent);
+                }
+            }
+        };
     }
 
     //TODO
