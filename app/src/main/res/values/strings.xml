@@ -24,6 +24,9 @@
     <string name="submission_description_hint">Add a description</string>
     <string name="submit">Submit</string>
     <string name="portfolio_button_text">Portfolio</string>
+    <string name="discovery_button_text">Discovery</string>
+    <string name="like_button_text">Like</string>
+    <string name="dislike_button_text">Dislike</string>
     <string-array
         name="my_facebook_permissions">
         <item>public_profile</item>
