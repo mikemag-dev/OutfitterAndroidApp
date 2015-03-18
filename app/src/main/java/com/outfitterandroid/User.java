@@ -83,6 +83,8 @@ public class User {
         Bitmap bmp = mCurrentSubmission.getImage();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bmp.recycle();
+        Log.d(TAG, Integer.toString(stream.size()));
         byte[] byteArray = stream.toByteArray();
 
         ParseFile image = new ParseFile("submissionImage.png", byteArray);
