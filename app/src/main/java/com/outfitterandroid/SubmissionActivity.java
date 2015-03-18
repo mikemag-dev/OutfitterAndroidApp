@@ -2,8 +2,14 @@ package com.outfitterandroid;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -14,7 +20,8 @@ import android.widget.Toast;
 
 import com.parse.ParseUser;
 
-import java.util.Date;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * Created by MaguireM on 2/23/15.
@@ -47,25 +54,67 @@ public class SubmissionActivity extends Activity {
 
         mCurrentUser = ParseUser.getCurrentUser();
 
-        //set image view and checkboxes
-        Bitmap capturedImage = (Bitmap) getIntent()
-                .getBundleExtra(ProfileActivity.EXTRA_SUBMISSION_BUNDLE)
-                .get("data");
-        mSubmissionImageView.setImageBitmap(capturedImage);
+        //set image view and
+        Bundle extras = getIntent().getBundleExtra(ProfileActivity.EXTRA_SUBMISSION_BUNDLE);
+        Uri imageUri = Uri.parse(extras.getString(MediaStore.EXTRA_OUTPUT));
+        Bitmap capturedImage = getBitmapFromUri(imageUri);
+        Bitmap scaledCapturedImage = getScaledImagePreview(capturedImage);
+        mSubmissionImageView.setImageBitmap(scaledCapturedImage);
         mIsPriorityCheckBox.setChecked(!User.hasSubmittedPrioritySubmissionToday(mCurrentUser));
 
         //build submission
         mCurrentSubmission = new Submission();
         mCurrentSubmission.setSubmittedByUser(mCurrentUser.getObjectId());
         mCurrentSubmission.setIsPrioritySubmission(!User.hasSubmittedPrioritySubmissionToday(mCurrentUser));
+        Log.d(TAG, Integer.toString(capturedImage.getHeight()*capturedImage.getRowBytes()));
         mCurrentSubmission.setImage(capturedImage);
-
         //set button listeners
 
         mArticleRadioGroup.setOnCheckedChangeListener(updateSubmissionArticle());
         mAudienceRadioGroup.setOnCheckedChangeListener(updateSubmissionAudience());
         mIsPriorityCheckBox.setOnCheckedChangeListener(updateSubmissionIsPrioritySubmission());
         mSubmitButton.setOnClickListener(submitSubmission());
+    }
+
+    private Bitmap getScaledImagePreview(Bitmap capturedImage) {
+        double scaleFactor;
+        Matrix m  = new Matrix();
+        m.postRotate(90);
+        capturedImage = Bitmap.createBitmap(capturedImage, 0, 0, capturedImage.getWidth(), capturedImage.getHeight(), m, true);
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        double maxWidth = size.x;
+        double maxHeight = size.y/2;
+        double imgWidth = capturedImage.getWidth();
+        double imgHeight = capturedImage.getHeight();
+        if(imgWidth > maxWidth){
+            scaleFactor = maxWidth/imgWidth;
+            imgWidth = imgWidth*scaleFactor;
+            imgHeight = imgHeight*scaleFactor;
+        }
+        if(imgHeight > maxHeight){
+            scaleFactor = maxHeight/imgHeight;
+            imgWidth = imgWidth*scaleFactor;
+            imgHeight = imgHeight*scaleFactor;
+        }
+
+        return Bitmap.createScaledBitmap(capturedImage, (int) imgWidth, (int) imgHeight, false);
+    }
+
+    private Bitmap getBitmapFromUri(Uri imageUri) {
+        try{
+            return MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+        }
+        catch (FileNotFoundException e){
+            Log.d(TAG, String.format("no image at specified imageUri '%s'", imageUri.toString()));
+            return null;
+        }
+        catch (IOException e){
+            Log.d(TAG, "could not resolve content");
+            return null;
+        }
     }
 
     private RadioGroup.OnCheckedChangeListener updateSubmissionArticle() {
