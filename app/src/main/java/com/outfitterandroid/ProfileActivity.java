@@ -142,11 +142,8 @@ public class ProfileActivity extends Activity {
             case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
                 if(resultCode == Activity.RESULT_OK){
                     Toast.makeText(this, "Image saved to:\n" +   data.getData(), Toast.LENGTH_LONG).show();
-                    Bundle extras = data.getExtras();
-//                    Bitmap photoBitmap = (Bitmap) extras.get("data");
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    photoBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                    byte[] photoByteArray = stream.toByteArray();
+                    Bundle extras = new Bundle();
+                    extras.putString(MediaStore.EXTRA_OUTPUT, data.getData().toString());
                     Intent submissionIntent = new Intent(ProfileActivity.this, SubmissionActivity.class);
                     submissionIntent.putExtra(ProfileActivity.EXTRA_SUBMISSION_BUNDLE, extras);
                     startActivityForResult(submissionIntent, SUBMIT_PHOTO_ACTIVITY_REQUEST_CODE);
