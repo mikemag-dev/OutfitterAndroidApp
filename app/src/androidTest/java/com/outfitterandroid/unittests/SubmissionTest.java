@@ -11,6 +11,11 @@ import java.util.Date;
  */
 public class SubmissionTest extends TestCase {
 
+    public void testSubmissionCreation(){
+        Submission testSub = new Submission();
+        assertNotNull(testSub);
+    }
+
     public void testGetCreatedAt() throws Exception {
         Submission testSub = new Submission();
         Date testDate = new Date();
@@ -34,19 +39,31 @@ public class SubmissionTest extends TestCase {
     }
 
     public void testGetArticle() throws Exception {
-
+        Submission testSub = new Submission();
+        int testArticle = 2;
+        testSub.setArticle(testArticle);
+        assertEquals(testArticle, testSub.getArticle());
     }
 
     public void testIsPrioritySubmission() throws Exception {
-
+        Submission testSub = new Submission();
+        boolean isPriority = true;
+        testSub.setIsPrioritySubmission(isPriority);
+        assertTrue(testSub.isPrioritySubmission());
     }
 
     public void testIsToReceiveMaleFeedback() throws Exception {
-
+        Submission testSub = new Submission();
+        boolean isMale = false;
+        testSub.setToReceiveMaleFeedback(isMale);
+        assertFalse(testSub.isToReceiveMaleFeedback());
     }
 
     public void testIsToReceiveFemaleFeedback() throws Exception {
-
+        Submission testSub = new Submission();
+        boolean isFemale = true;
+        testSub.setToReceiveFemaleFeedback(isFemale);
+        assertTrue(testSub.isToReceiveFemaleFeedback());
     }
 
     public void testGetImage() throws Exception {
