@@ -1,5 +1,7 @@
 package com.outfitterandroid.unittests;
 
+import android.graphics.Bitmap;
+
 import com.outfitterandroid.Submission;
 
 import junit.framework.TestCase;
@@ -67,10 +69,16 @@ public class SubmissionTest extends TestCase {
     }
 
     public void testGetImage() throws Exception {
-
+        Submission testSub = new Submission();
+        Bitmap testImage = null;
+        testSub.setImage(testImage);
+        assertEquals(testImage, testSub.getImage());
     }
 
     public void testGetSubmittedByUser() throws Exception {
-
+        Submission testSub = new Submission();
+        String submittedString = "test";
+        testSub.setSubmittedByUser(submittedString);
+        assertEquals(submittedString, testSub.getSubmittedByUser());
     }
 }
