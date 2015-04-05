@@ -2,6 +2,9 @@ package com.outfitterandroid.unittests;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests for submission
+ */
 public class SubmissionTest extends TestCase {
 
     public void testGetCreatedAt() throws Exception {
