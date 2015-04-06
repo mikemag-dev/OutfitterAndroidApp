@@ -31,6 +31,7 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
             ParseUser.logOut();
         }
         getActivity();
+
     }
 
     //TODO Finish tests
@@ -38,7 +39,7 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
         onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
         onView(withId(R.id.parse_login_button)).perform(click());
-        Thread.sleep(500);
+        Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
 
@@ -48,7 +49,7 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
         onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
         onView(withId(R.id.parse_login_button)).perform(click());
-        Thread.sleep(500);
+        Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
         onView(withId(R.id.discovery_dislike_button)).check(matches(withText("Dislike")));
@@ -58,10 +59,33 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
         onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
         onView(withId(R.id.parse_login_button)).perform(click());
-        Thread.sleep(500);
+        Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
         onView(withId(R.id.discovery_like_button)).check(matches(withText("Like")));
     }
 
+    public void testDiscoverDislikeButtonClick() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        onView(withId(R.id.discovery_dislike_button)).check(matches(withText("Dislike")));
+        onView(withId(R.id.discovery_dislike_button)).perform(click());
+        onView(withId(R.id.discovery_dislike_button)).check(matches(withText("Dislike")));
+    }
+
+    public void testDiscoverLikeButtonClick() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        onView(withId(R.id.discovery_like_button)).check(matches(withText("Like")));
+        onView((withId(R.id.discovery_like_button))).perform(click());
+        onView(withId(R.id.discovery_like_button)).check(matches(withText("Like")));
+    }
 }
