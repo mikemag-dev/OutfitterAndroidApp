@@ -34,7 +34,6 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
 
     }
 
-    //TODO Finish tests
     public void testDiscoveryOpen() throws InterruptedException {
         onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
         onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
