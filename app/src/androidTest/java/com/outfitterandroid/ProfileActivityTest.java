@@ -43,19 +43,52 @@ public class ProfileActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.profile_logout_button)).perform(click());
     }
 
-    public void testPortfolioButton(){
+    public void testPortfolioButton() throws InterruptedException {
+        String validUsername = "i_am_a_user\n";
+        String validPassword = "i_am_a_user\n";
+
+        onView(withId(R.id.login_username_input)).perform(typeText(validUsername));
+        onView(withId(R.id.login_password_input)).perform(typeText(validPassword));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(500);
+        onView(withId(R.id.profile_portfolio_button)).check(matches(withText("Portfolio")));
+        onView(withId(R.id.profile_logout_button)).perform(click());
 
     }
 
-    public void testLogoutButton(){
+    public void testLogoutButton() throws InterruptedException {
+        String validUsername = "i_am_a_user\n";
+        String validPassword = "i_am_a_user\n";
 
+        onView(withId(R.id.login_username_input)).perform(typeText(validUsername));
+        onView(withId(R.id.login_password_input)).perform(typeText(validPassword));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(500);
+        onView(withId(R.id.profile_logout_button)).check(matches(withText("Logout")));
+        onView(withId(R.id.profile_logout_button)).perform(click());
     }
 
-    public void testDeleteUserButton(){
+    public void testDeleteUserButton() throws InterruptedException {
+        String validUsername = "i_am_a_user\n";
+        String validPassword = "i_am_a_user\n";
 
+        onView(withId(R.id.login_username_input)).perform(typeText(validUsername));
+        onView(withId(R.id.login_password_input)).perform(typeText(validPassword));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(500);
+        onView(withId(R.id.profile_delete_user_button)).check(matches(withText("Delete User")));
+        onView(withId(R.id.profile_logout_button)).perform(click());
     }
 
-    public void testTakePictureButton(){
+    public void testTakePictureButton() throws InterruptedException {
+        String validUsername = "i_am_a_user\n";
+        String validPassword = "i_am_a_user\n";
 
+        onView(withId(R.id.login_username_input)).perform(typeText(validUsername));
+        onView(withId(R.id.login_password_input)).perform(typeText(validPassword));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(500);
+        onView(withId(R.id.profile_capture_image_button)).check(matches(withText("Take Picture")));
+        onView(withId(R.id.profile_logout_button)).perform(click());
     }
 }
