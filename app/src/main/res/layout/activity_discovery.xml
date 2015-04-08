@@ -3,18 +3,39 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/article_spinner"
+            android:layout_weight="1"
+            android:entries="@array/article_spinner_entries"
+            />
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/gender_submitted_by_spinner"
+            android:layout_weight="1"
+            android:entries="@array/gender_submitted_by_spinner_entries"/>
+        />
+
+    </LinearLayout>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="6"
         android:id="@+id/discovery_image_view"
         android:layout_gravity="center_horizontal" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="2">
         <Button
             android:layout_width="0dp"
             android:layout_height="fill_parent"

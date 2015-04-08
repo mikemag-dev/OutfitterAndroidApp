@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="article_spinner_entries">
+        <item>All</item>
+        <item>Full Outfit</item>
+        <item>Top</item>
+        <item>Bottom</item>
+        <item>Shoes</item>
+        <item>Accessory</item>
+    </string-array>
+    <string-array name="gender_submitted_by_spinner_entries">
+        <item>Guys &amp; Girls</item>
+        <item>Guys</item>
+        <item>Girls</item>
+    </string-array>
+
+</resources>
