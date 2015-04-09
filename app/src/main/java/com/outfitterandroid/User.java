@@ -73,6 +73,7 @@ public class User {
     public static void submitSubmission(ParseUser user, Submission mCurrentSubmission) {
         ParseObject submission = new ParseObject("Submission");
         submission.put("submittedByUser", mCurrentSubmission.getSubmittedByUser());
+        submission.put("genderOfSubmitter", mCurrentSubmission.getGenderOfSubmitter());
         submission.put("article", mCurrentSubmission.getArticle());
         submission.put("numLikes", mCurrentSubmission.getNumLikes());
         submission.put("numDislikes", mCurrentSubmission.getNumDislikes());
@@ -84,7 +85,7 @@ public class User {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
         bmp.recycle();
-        Log.d(TAG, Integer.toString(stream.size()));
+        //Log.d(TAG, Integer.toString(stream.size()));
         byte[] byteArray = stream.toByteArray();
 
         ParseFile image = new ParseFile("submissionImage.png", byteArray);

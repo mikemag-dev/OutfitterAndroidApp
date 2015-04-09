@@ -9,9 +9,11 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -30,10 +32,12 @@ public class DiscoveryActivity extends Activity{
     GestureDetectorCompat mGestureDetector;
 
     ImageView mSubmissionImageView;
+    TextView mDisplayedSubmissionArticleTextView;
+    TextView mDisplayedSubmissionGenderOfSubmitterTextView;
     Button mLikeButton;
     Button mDislikeButton;
     Spinner mArticleSpinner;
-    Spinner mGenderSubmittedBy;
+    Spinner mGenderSubmittedBySpinner;
 
     ParseObject mCurrentSubmission;
 
@@ -45,14 +49,32 @@ public class DiscoveryActivity extends Activity{
         mGestureDetector = new GestureDetectorCompat(this, new SwipeGestureListener());
 
         mSubmissionImageView = (ImageView) findViewById(R.id.discovery_image_view);
+        mDisplayedSubmissionArticleTextView = (TextView) findViewById(R.id.displayed_article_text_view);
+        mDisplayedSubmissionGenderOfSubmitterTextView = (TextView) findViewById(R.id.displayed_submission_gender_of_submitter_text_view);
         mLikeButton = (Button) findViewById(R.id.discovery_like_button);
         mDislikeButton = (Button) findViewById(R.id.discovery_dislike_button);
         mArticleSpinner = (Spinner) findViewById(R.id.article_spinner);
-        mGenderSubmittedBy = (Spinner) findViewById(R.id.gender_submitted_by_spinner);
+        mGenderSubmittedBySpinner = (Spinner) findViewById(R.id.gender_submitted_by_spinner);
 
         mLikeButton.setOnClickListener(submitButtonVote());
         mDislikeButton.setOnClickListener(submitButtonVote());
         mSubmissionImageView.setOnTouchListener(submitSwipeVote());
+        mArticleSpinner.setOnItemSelectedListener(refreshDiscoverySubmission());
+        mGenderSubmittedBySpinner.setOnItemSelectedListener(refreshDiscoverySubmission());
+    }
+
+    private AdapterView.OnItemSelectedListener refreshDiscoverySubmission() {
+        return new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                populateWithSubmission();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
     }
 
     private View.OnTouchListener submitSwipeVote() {
@@ -75,25 +97,42 @@ public class DiscoveryActivity extends Activity{
     private void populateWithSubmission() {
         ParseUser curUser = ParseUser.getCurrentUser();
         ArrayList<String> userVotedOnIDList = (ArrayList<String>) curUser.get("votedOnIDList");
-        if (null == userVotedOnIDList) userVotedOnIDList = new ArrayList<>();
-        curUser.put("votedOnIDList", userVotedOnIDList);
-        curUser.saveInBackground();
+        if (null == userVotedOnIDList){
+            userVotedOnIDList = new ArrayList<>();
+            curUser.put("votedOnIDList", userVotedOnIDList);
+            curUser.saveInBackground();
+        }
+        int articleFilterSelectedIndex = mArticleSpinner.getSelectedItemPosition();
+        int genderOfSubmitterSelectedIndex = mGenderSubmittedBySpinner.getSelectedItemPosition();
 
         //build query
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Submission");
         query.whereNotContainedIn("objectId", userVotedOnIDList);
+        if (articleFilterSelectedIndex != 0){
+            query.whereEqualTo("article", articleFilterSelectedIndex-1);
+        }
+        if (genderOfSubmitterSelectedIndex != 0){
+            query.whereEqualTo("genderOfSubmitter", genderOfSubmitterSelectedIndex == 1 ? "male" : "female");
+        }
+
 
         //populate UI elements
         try{
             mCurrentSubmission = query.getFirst();
+            String article = Submission.articleIdToString(mCurrentSubmission.getNumber("article").intValue());
+            String genderOfSubmitter = mCurrentSubmission.getString("genderOfSubmitter");
             byte[] submissionByteArray = mCurrentSubmission.getParseFile("image").getData();
             Bitmap submissionImage = BitmapFactory.decodeByteArray(submissionByteArray, 0, submissionByteArray.length);
             mSubmissionImageView.setImageBitmap(submissionImage);
+            mDisplayedSubmissionArticleTextView.setText("Article Displayed: " + article);
+            mDisplayedSubmissionGenderOfSubmitterTextView.setText("Gender of Submitter: " + genderOfSubmitter);
         }
         catch (ParseException e){
             Toast.makeText(this, "no more submissions to discover", Toast.LENGTH_SHORT).show();
             mCurrentSubmission = null;
             mSubmissionImageView.setImageBitmap(null);
+            mDisplayedSubmissionArticleTextView.setText("Article Displayed: ");
+            mDisplayedSubmissionGenderOfSubmitterTextView.setText("Gender of Submitter: ");
         }
     }
 

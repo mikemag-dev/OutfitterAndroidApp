@@ -65,6 +65,7 @@ public class SubmissionActivity extends Activity {
         //build submission
         mCurrentSubmission = new Submission();
         mCurrentSubmission.setSubmittedByUser(mCurrentUser.getObjectId());
+        mCurrentSubmission.setGenderOfSubmitter(mCurrentUser.getString("gender"));
         mCurrentSubmission.setIsPrioritySubmission(!User.hasSubmittedPrioritySubmissionToday(mCurrentUser));
         Log.d(TAG, Integer.toString(capturedImage.getHeight()*capturedImage.getRowBytes()));
         mCurrentSubmission.setImage(capturedImage);

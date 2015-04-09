@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="article_spinner_entries">
-        <item>All</item>
+        <item>Any</item>
         <item>Full Outfit</item>
         <item>Top</item>
         <item>Bottom</item>

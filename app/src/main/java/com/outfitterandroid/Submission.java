@@ -20,6 +20,7 @@ public class Submission {
 
     //private ArrayList<Bitmap> mImageList;
     private String mSubmittedByUser;
+    private String mGenderOfSubmitter;
     private Bitmap mImage;
     private Date mCreatedAt;
     private int mNumLikes;
@@ -92,6 +93,19 @@ public class Submission {
         this.mToReceiveMaleFeedback = mToReceiveMaleFeedback;
     }
 
+    public static String articleIdToString(int id)
+    {
+        switch (id){
+            case 0: return "Full Outfit";
+            case 1: return "Top";
+            case 2: return "Bottom";
+            case 3: return "Shoes";
+            case 4: return "Accessory";
+        }
+
+        return "error";
+    }
+
     public boolean isToReceiveFemaleFeedback() {
         return mToReceiveFemaleFeedback;
     }
@@ -114,6 +128,14 @@ public class Submission {
 
     public void setSubmittedByUser(String mSubmittedByUser) {
         this.mSubmittedByUser = mSubmittedByUser;
+    }
+
+    public String getGenderOfSubmitter() {
+        return mGenderOfSubmitter;
+    }
+
+    public void setGenderOfSubmitter(String mGenderOfSubmitter) {
+        this.mGenderOfSubmitter = mGenderOfSubmitter;
     }
 }
 
