@@ -95,8 +95,8 @@ public class PortfolioActivity extends Activity{
      I did not find out about the Parse query adapter until it was too late but that
      seems to be the better approach.
      *****************/
-    private ArrayList<String> getImageFiles(int max){
-        final ArrayList<String> imageFiles = new ArrayList<>();
+    private ArrayList<SubmissionStats> getImageFiles(int max){
+        final ArrayList<SubmissionStats> imageFiles = new ArrayList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Submission");
         //perhaps not get in background? maybe halt the UI thread before this?
@@ -115,7 +115,11 @@ public class PortfolioActivity extends Activity{
            List<ParseObject> objects= query.find();
            for (ParseObject p: objects)
            {
-               imageFiles.add(p.getParseFile("image").getUrl());
+               Log.d(TAG,p.getParseFile("image").getUrl() );
+               String dislikes= p.getString("numDislikes");
+               String likes= p.getString("numLikes");
+               SubmissionStats new_stat= new SubmissionStats(p.getParseFile("image").getUrl(),likes,dislikes);
+               imageFiles.add(new_stat);
            }
         }
         catch (ParseException e)

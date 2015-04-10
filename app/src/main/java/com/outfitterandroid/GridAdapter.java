@@ -24,12 +24,12 @@ public class GridAdapter extends BaseAdapter{
     private static final String TAG = "GridAdapter";
     Context context;
     PortfolioActivity myActivity;
-    ArrayList<String> urlList;
+    ArrayList<SubmissionStats> dataList;
     private static LayoutInflater inflater=null;
-    public GridAdapter(PortfolioActivity mainActivity,ArrayList<String> urls) {
+    public GridAdapter(PortfolioActivity mainActivity,ArrayList<SubmissionStats> data) {
         // TODO Auto-generated constructor stub
         context=mainActivity;
-        this.urlList=urls;
+        this.dataList=data;
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -37,7 +37,7 @@ public class GridAdapter extends BaseAdapter{
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return urlList.size();
+        return dataList.size();
     }
 
     @Override
@@ -63,15 +63,16 @@ public class GridAdapter extends BaseAdapter{
 
         rowView = inflater.inflate(R.layout.grid_element,null );
         ImageView imageView=(ImageView) rowView.findViewById(R.id.imageView1);
-        Log.d(TAG, urlList.get(position));
+        Log.d(TAG, dataList.get(position).getUrl());
         Picasso.with(context)
-                .load(urlList.get(position))
+                .load(dataList.get(position).getUrl())
                 .into(imageView);
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // for testing purposes only
-                //Toast.makeText(context, "You Clicked "+position, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "likes:"+dataList.get(position).getNum_likes()+" dislikes"+dataList.get(position).getNum_dislikes()
+                        , Toast.LENGTH_LONG).show();
             }
         });
 
