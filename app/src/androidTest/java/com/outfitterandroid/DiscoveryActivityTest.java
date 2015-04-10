@@ -157,15 +157,36 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withText("Top")).check(matches(withText("Top")));
     }
 
-    public void testDiscoverFilterBottomOutfit(){
-
+    public void testDiscoverFilterBottomOutfit() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        onView(withId(R.id.article_spinner)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Bottom"))).perform(click());
+        onView(withText("Bottom")).check(matches(withText("Bottom")));
     }
 
-    public void testDiscoverFilterShoesOutfit(){
-
+    public void testDiscoverFilterShoesOutfit() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        onView(withId(R.id.article_spinner)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Shoes"))).perform(click());
+        onView(withText("Shoes")).check(matches(withText("Shoes")));
     }
 
-    public void testDiscoverFilterAccessoryOutfit(){
-
+    public void testDiscoverFilterAccessoryOutfit() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        onView(withId(R.id.article_spinner)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Accessory"))).perform(click());
+        onView(withText("Accessory")).check(matches(withText("Accessory")));
     }
 }
