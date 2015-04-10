@@ -116,9 +116,9 @@ public class PortfolioActivity extends Activity{
            for (ParseObject p: objects)
            {
                Log.d(TAG,p.getParseFile("image").getUrl() );
-               String dislikes= p.getString("numDislikes");
-               String likes= p.getString("numLikes");
-               SubmissionStats new_stat= new SubmissionStats(p.getParseFile("image").getUrl(),likes,dislikes);
+               int dislikes= p.getInt("numDislikes");
+               int likes= p.getInt("numLikes");
+               SubmissionStats new_stat= new SubmissionStats(p.getParseFile("image").getUrl(),likes+"",dislikes+"");
                imageFiles.add(new_stat);
            }
         }
