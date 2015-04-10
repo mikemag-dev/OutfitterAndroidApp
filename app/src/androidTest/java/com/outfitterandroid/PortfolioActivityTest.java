@@ -8,10 +8,12 @@ import android.test.ActivityInstrumentationTestCase2;
 
 import com.parse.ParseUser;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.IsAnything.anything;
 
 public class PortfolioActivityTest extends ActivityInstrumentationTestCase2{
 
@@ -28,6 +30,7 @@ public class PortfolioActivityTest extends ActivityInstrumentationTestCase2{
         if(ParseUser.getCurrentUser() != null){
             ParseUser.logOut();
         }
+        Thread.sleep(2000);
         getActivity();
     }
 
@@ -42,19 +45,39 @@ public class PortfolioActivityTest extends ActivityInstrumentationTestCase2{
 
     //Click and stats tests
 
-    public void testClickFirstPhoto(){
-
+    public void testClickFirstPhoto() throws InterruptedException {
+        onView(withId(R.id.facebook_login)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_portfolio_button)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(0).
+                onChildView(withId(R.id.imageView1)).perform(click());
     }
 
-    public void testClickSecondPhoto(){
-
+    public void testClickSecondPhoto() throws InterruptedException {
+        onView(withId(R.id.facebook_login)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_portfolio_button)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(1).
+                onChildView(withId(R.id.imageView1)).perform(click());
     }
 
-    public void testClickThirdPhoto(){
-
+    public void testClickThirdPhoto() throws InterruptedException {
+        onView(withId(R.id.facebook_login)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_portfolio_button)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(2).
+                onChildView(withId(R.id.imageView1)).perform(click());
     }
 
-    public void testFirstPhotoLikes(){
+    public void testClickFirstAgain() throws InterruptedException {
+        onView(withId(R.id.facebook_login)).perform(click());
+        Thread.sleep(3000);
+        onView(withId(R.id.profile_portfolio_button)).perform(click());
+        onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(0).
+                onChildView(withId(R.id.imageView1)).perform(click());
+    }
+
+    /*public void testFirstPhotoLikes(){
 
     }
 
@@ -64,5 +87,5 @@ public class PortfolioActivityTest extends ActivityInstrumentationTestCase2{
 
     public void testThirdPhotoLikesNotNull(){
 
-    }
+    }*/
 }
