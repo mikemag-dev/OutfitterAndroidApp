@@ -101,13 +101,27 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
         onData(allOf(is(instanceOf(String.class)), is("Guys & Girls"))).perform(click());
         onView(withText("Guys & Girls")).check(matches(withText("Guys & Girls")));
     }
-/**
-    public void testDiscoverFilterGuys(){
 
+    public void testDiscoverFilterGuys() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        onView(withId(R.id.gender_submitted_by_spinner)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Guys"))).perform(click());
+        onView(withText("Guys")).check(matches(withText("Guys")));
     }
 
-    public void testDiscoverFilterGirls(){
-
+    public void testDiscoverFilterGirls() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        onView(withId(R.id.gender_submitted_by_spinner)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Girls"))).perform(click());
+        onView(withText("Girls")).check(matches(withText("Girls")));
     }
 
     public void testDiscoverFilterAnyOutfit(){
@@ -132,5 +146,5 @@ public class DiscoveryActivityTest extends ActivityInstrumentationTestCase2 {
 
     public void testDiscoverFilterAccessoryOutfit(){
 
-    }*/
+    }
 }
