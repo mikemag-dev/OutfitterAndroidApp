@@ -42,5 +42,27 @@ public class PortfolioActivityTest extends ActivityInstrumentationTestCase2{
 
     //Click and stats tests
 
+    public void testClickFirstPhoto(){
 
+    }
+
+    public void testClickSecondPhoto(){
+
+    }
+
+    public void testClickThirdPhoto(){
+
+    }
+
+    public void testFirstPhotoLikes(){
+
+    }
+
+    public void testSecondPhotoDislikes(){
+
+    }
+
+    public void testThirdPhotoLikesNotNull(){
+
+    }
 }
