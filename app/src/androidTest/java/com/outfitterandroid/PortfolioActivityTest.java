@@ -39,4 +39,8 @@ public class PortfolioActivityTest extends ActivityInstrumentationTestCase2{
         onView(withId(R.id.profile_portfolio_button)).perform(click());
         assertNotNull(onView(withId(R.id.portfolio_view)));
     }
+
+    //Click and stats tests
+
+
 }
