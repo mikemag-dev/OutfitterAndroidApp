@@ -1,6 +1,7 @@
 package com.outfitterandroid;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -28,12 +29,12 @@ import java.util.ArrayList;
  */
 public class DiscoveryActivity extends Activity{
 
-
     GestureDetectorCompat mGestureDetector;
 
     ImageView mSubmissionImageView;
     TextView mDisplayedSubmissionArticleTextView;
     TextView mDisplayedSubmissionGenderOfSubmitterTextView;
+    Button mViewCommentsButton;
     Button mLikeButton;
     Button mDislikeButton;
     Spinner mArticleSpinner;
@@ -51,11 +52,20 @@ public class DiscoveryActivity extends Activity{
         mSubmissionImageView = (ImageView) findViewById(R.id.discovery_image_view);
         mDisplayedSubmissionArticleTextView = (TextView) findViewById(R.id.displayed_article_text_view);
         mDisplayedSubmissionGenderOfSubmitterTextView = (TextView) findViewById(R.id.displayed_submission_gender_of_submitter_text_view);
+        mViewCommentsButton = (Button) findViewById(R.id.view_comments_button);
         mLikeButton = (Button) findViewById(R.id.discovery_like_button);
         mDislikeButton = (Button) findViewById(R.id.discovery_dislike_button);
         mArticleSpinner = (Spinner) findViewById(R.id.article_spinner);
         mGenderSubmittedBySpinner = (Spinner) findViewById(R.id.gender_submitted_by_spinner);
 
+        mViewCommentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DiscoveryActivity.this, CommentsActivity.class);
+                intent.putExtra(CommentsActivity.EXTRA_SUBMISSION_ID, mCurrentSubmission.getObjectId());
+                startActivity(intent);
+            }
+        });
         mLikeButton.setOnClickListener(submitButtonVote());
         mDislikeButton.setOnClickListener(submitButtonVote());
         mSubmissionImageView.setOnTouchListener(submitSwipeVote());
