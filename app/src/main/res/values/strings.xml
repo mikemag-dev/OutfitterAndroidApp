@@ -29,6 +29,7 @@
     <string name="dislike_button_text">Dislike</string>
     <string name="comments_button_text">View Comments</string>
     <string name="add_comment_button_text">add comment</string>
+    <string name="write_comment_hint">Write a comment...</string>
     <string-array
         name="my_facebook_permissions">
         <item>public_profile</item>

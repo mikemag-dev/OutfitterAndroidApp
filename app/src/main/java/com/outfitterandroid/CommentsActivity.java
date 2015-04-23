@@ -1,11 +1,13 @@
 package com.outfitterandroid;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +37,7 @@ public class CommentsActivity extends Activity{
     final String COMMENT_EMPTY = "comment text is empty";
 
     String mSubmissionId;
-
+    List<ParseObject> mComments;
     ListView mCommentsListView;
     EditText mCommentEditText;
     Button mAddCommentButton;
@@ -50,8 +52,19 @@ public class CommentsActivity extends Activity{
         mCommentsListView = (ListView) findViewById(R.id.comments_list_view);
         mCommentEditText = (EditText) findViewById(R.id.comment_edit_text);
         mAddCommentButton = (Button) findViewById(R.id.add_comment_button);
-
-        mCommentsListView.setAdapter(new CommentsAdapter(mSubmissionId));
+        try {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
+            query.whereEqualTo("submissionId", mSubmissionId);
+            mComments = query.find();
+            for(ParseObject comment : mComments){
+                comment.put("numUpvotes", getNumUpvotes(comment.getObjectId())) ;
+            }
+            Collections.sort(mComments, new CommentComparator());
+            mCommentsListView.setAdapter(new CommentsAdapter(mSubmissionId, mComments));
+        }
+        catch(ParseException e){
+            Log.d(TAG, "bad comment save");
+        }
         mAddCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,24 +76,51 @@ public class CommentsActivity extends Activity{
 
                 }
                 else{
+                    mCommentEditText.setText("");
+                    View focusedView = CommentsActivity.this.getCurrentFocus();
+                    if (null != focusedView){
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromInputMethod(focusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
                     ParseObject comment = new ParseObject("Comment");
                     comment.put("comment", commentText);
-                    comment.put("numUpvotes", 0);
+                    //comment.put("numUpvotes", 0);
                     comment.put("submissionId", mSubmissionId);
                     comment.put("userId", ParseUser.getCurrentUser().getObjectId());
                     try{
                         comment.save();
+                        //comment.saveInBackground();
                         //refresh comments list
-                        mCommentsListView.setAdapter(new CommentsAdapter(mSubmissionId));
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
+                        query.whereEqualTo("submissionId", mSubmissionId);
+                        mComments = query.find();
+                        Collections.sort(mComments, new CommentComparator());
+                        CommentsAdapter ca = (CommentsAdapter) mCommentsListView.getAdapter();
+                        comment.put("numUpvotes", 0);
+                        ca.addComment(comment);
+                        ca.notifyDataSetChanged();
                     }
                     catch(ParseException e){
                         Log.d(TAG, "bad comment save");
                     }
 
                 }
-                mCommentEditText.setText("");
             }
         });
+    }
+
+    private int getNumUpvotes(String commentId) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("CommentActivity");
+        query.whereEqualTo("commentId", commentId);
+        try {
+            int numUpvotes = query.find().size();
+            Log.d(TAG, String.format("commentId : %s\tnumUpvotes : %d", commentId, numUpvotes));
+            return numUpvotes;
+        }
+        catch (ParseException e){
+            Log.d(TAG, "bad commentId");
+            return 0;
+        }
     }
 
     public class CommentsAdapter extends BaseAdapter {
@@ -90,25 +130,14 @@ public class CommentsActivity extends Activity{
         List<ParseObject> mComments;
 
 
-        public CommentsAdapter(String submissionId) {
+        public CommentsAdapter(String submissionId, List<ParseObject> comments) {
             mSubmissionId = submissionId;
+            mComments = comments;
         }
 
         @Override
         public int getCount() {
-            int count = 0;
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
-            query.whereEqualTo("submissionId", mSubmissionId);
-            try{
-                mComments = query.find();
-                Collections.sort(mComments, new CommentComparator());
-                count = mComments.size();
-            }
-            catch (ParseException e){
-                Log.d(TAG, "no comments found");
-            }
-
-            return count;
+            return mComments.size();
         }
 
         @Override
@@ -136,7 +165,7 @@ public class CommentsActivity extends Activity{
             final ParseObject comment = (ParseObject) getItem(position);
             String commentId = comment.getObjectId();
             String commentText = comment.getString("comment");
-            String numUpvotes = Integer.toString(getNumUpvotes(commentId));
+            String numUpvotes = Integer.toString(comment.getInt("numUpvotes"));
             String userId, username;
             userId = username = comment.getString("userId");
             SimpleDateFormat dt = new SimpleDateFormat("hh:mm MM-dd-yyyy");
@@ -171,11 +200,12 @@ public class CommentsActivity extends Activity{
                         ParseObject upvote = new ParseObject("CommentActivity");
                         upvote.put("commentId", commentId);
                         upvote.put("userId", userId);
-                        try{
+                        try {
                             upvote.save();
                             Log.d(TAG, "upvote saved");
-                        }
-                        catch (ParseException e){
+                            comment.put("numUpvotes", comment.getInt("numUpvotes") + 1);
+                            notifyDataSetChanged();
+                        } catch (ParseException e) {
                             Log.d(TAG, "upvote not submitted");
                         }
                     }
@@ -187,19 +217,7 @@ public class CommentsActivity extends Activity{
             return convertView;
         }
 
-        private int getNumUpvotes(String commentId) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("CommentActivity");
-            query.whereEqualTo("commentId", commentId);
-            try {
-                int numUpvotes = query.find().size();
-                Log.d(TAG, String.format("commentId : %s\tnumUpvotes : %d", commentId, numUpvotes));
-                return numUpvotes;
-            }
-            catch (ParseException e){
-                Log.d(TAG, "bad commentId");
-                return 0;
-            }
-        }
+
 
         private boolean hasNotVoted(String userId, String commentId) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("CommentActivity");
@@ -215,6 +233,16 @@ public class CommentsActivity extends Activity{
                 return false;
             }
         }
+
+        public void addComment(ParseObject comment) {
+            mComments.add(comment);
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            super.notifyDataSetChanged();
+            Collections.sort(mComments, new CommentComparator());
+        }
     }
 
     public class CommentComparator implements Comparator{
@@ -229,7 +257,7 @@ public class CommentsActivity extends Activity{
             Date rhsCreatedAt = rhsComment.getCreatedAt();
 
             if( lhsUpvotes != rhsUpvotes){
-                return rhsUpvotes = lhsUpvotes;
+                return rhsUpvotes - lhsUpvotes;
             }
             else{
                 return lhsCreatedAt.after(rhsCreatedAt) ? 1 : -1;
