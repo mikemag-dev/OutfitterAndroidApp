@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,6 +78,7 @@ public class CommentsActivity extends Activity{
                     }
 
                 }
+                mCommentEditText.setText("");
             }
         });
     }
@@ -131,19 +133,21 @@ public class CommentsActivity extends Activity{
             }
 
             //collect data
-            ParseObject comment = (ParseObject) getItem(position);
+            final ParseObject comment = (ParseObject) getItem(position);
+            String commentId = comment.getObjectId();
             String commentText = comment.getString("comment");
-            String numUpvotes = Integer.toString(comment.getInt("numUpvotes"));
+            String numUpvotes = Integer.toString(getNumUpvotes(commentId));
             String userId, username;
             userId = username = comment.getString("userId");
             SimpleDateFormat dt = new SimpleDateFormat("hh:mm MM-dd-yyyy");
             String createdAt = dt.format(comment.getCreatedAt());
             try {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("_User");
                 username = query.get(userId).getString("username");
             }
             catch (ParseException e){
-                Log.d(TAG, "bad user objectId");
+                Log.d(TAG, String.format("bad user objectId %s", userId));
             }
 
             //fill views
@@ -151,14 +155,65 @@ public class CommentsActivity extends Activity{
             TextView commenterCommentTextView = (TextView) convertView.findViewById(R.id.commenter_comment_text_view);
             TextView commenterUsernameTextView = (TextView) convertView.findViewById(R.id.commenter_username_text_view);
             TextView commenterCommentCreatedAtTextView = (TextView) convertView.findViewById(R.id.commenter_created_at_text_view);
+            LinearLayout upvoteLinearLayout = (LinearLayout) convertView.findViewById(R.id.upvote_linear_layout);
 
             numUpvotesTextView.setText(numUpvotes);
             commenterCommentTextView.setText(commentText);
             commenterUsernameTextView.setText(username);
             commenterCommentCreatedAtTextView.setText(createdAt);
+            upvoteLinearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "upvote clicked");
+                    String commentId = comment.getObjectId();
+                    String userId = ParseUser.getCurrentUser().getObjectId();
+                    if (hasNotVoted(userId, commentId)) {
+                        ParseObject upvote = new ParseObject("CommentActivity");
+                        upvote.put("commentId", commentId);
+                        upvote.put("userId", userId);
+                        try{
+                            upvote.save();
+                            Log.d(TAG, "upvote saved");
+                        }
+                        catch (ParseException e){
+                            Log.d(TAG, "upvote not submitted");
+                        }
+                    }
+
+                }
+            });
 
             convertView.setClickable(false);
             return convertView;
+        }
+
+        private int getNumUpvotes(String commentId) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("CommentActivity");
+            query.whereEqualTo("commentId", commentId);
+            try {
+                int numUpvotes = query.find().size();
+                Log.d(TAG, String.format("commentId : %s\tnumUpvotes : %d", commentId, numUpvotes));
+                return numUpvotes;
+            }
+            catch (ParseException e){
+                Log.d(TAG, "bad commentId");
+                return 0;
+            }
+        }
+
+        private boolean hasNotVoted(String userId, String commentId) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("CommentActivity");
+            query.whereEqualTo("commentId", commentId);
+            query.whereEqualTo("userId", userId);
+            try {
+                int voteCount = query.find().size();
+                Log.d(TAG, String.format("in has not voted commentId : %s\tuserId : %s\tvoteCount : %d", commentId, userId, voteCount));
+                return voteCount == 0 ? true : false;
+            }
+            catch (ParseException e){
+                Log.d(TAG, "bad commentId or userId ");
+                return false;
+            }
         }
     }
 
