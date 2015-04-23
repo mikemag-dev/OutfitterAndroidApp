@@ -27,6 +27,8 @@
     <string name="discovery_button_text">Discovery</string>
     <string name="like_button_text">Like</string>
     <string name="dislike_button_text">Dislike</string>
+    <string name="comments_button_text">View Comments</string>
+    <string name="add_comment_button_text">add comment</string>
     <string-array
         name="my_facebook_permissions">
         <item>public_profile</item>
