@@ -3,7 +3,6 @@ package com.outfitterandroid;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,20 +51,35 @@ public class CommentsActivity extends Activity{
         mCommentsListView = (ListView) findViewById(R.id.comments_list_view);
         mCommentEditText = (EditText) findViewById(R.id.comment_edit_text);
         mAddCommentButton = (Button) findViewById(R.id.add_comment_button);
+        mComments = getComments();
+        mComments = sortComments(mComments);
+        mCommentsListView.setAdapter(new CommentsAdapter(mSubmissionId, mComments));
+        mAddCommentButton.setOnClickListener(addComment());
+    }
+
+    private List<ParseObject> getComments() {
+        List<ParseObject> comments = null;
         try {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
             query.whereEqualTo("submissionId", mSubmissionId);
-            mComments = query.find();
-            for(ParseObject comment : mComments){
+            comments = query.find();
+            for(ParseObject comment : comments){
                 comment.put("numUpvotes", getNumUpvotes(comment.getObjectId())) ;
             }
-            Collections.sort(mComments, new CommentComparator());
-            mCommentsListView.setAdapter(new CommentsAdapter(mSubmissionId, mComments));
         }
         catch(ParseException e){
             Log.d(TAG, "bad comment save");
         }
-        mAddCommentButton.setOnClickListener(new View.OnClickListener() {
+        return comments;
+    }
+
+    private List<ParseObject> sortComments(List<ParseObject> comments) {
+        if (null != comments) Collections.sort(comments, new CommentComparator());
+        return comments;
+    }
+
+    private View.OnClickListener addComment() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String commentText = mCommentEditText.getText().toString();
@@ -77,36 +91,34 @@ public class CommentsActivity extends Activity{
                 }
                 else{
                     mCommentEditText.setText("");
-                    View focusedView = CommentsActivity.this.getCurrentFocus();
-                    if (null != focusedView){
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromInputMethod(focusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    }
+                    hideKeyboard();
                     ParseObject comment = new ParseObject("Comment");
                     comment.put("comment", commentText);
                     //comment.put("numUpvotes", 0);
                     comment.put("submissionId", mSubmissionId);
                     comment.put("userId", ParseUser.getCurrentUser().getObjectId());
-                    try{
+                    try {
                         comment.save();
-                        //comment.saveInBackground();
-                        //refresh comments list
-                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Comment");
-                        query.whereEqualTo("submissionId", mSubmissionId);
-                        mComments = query.find();
-                        Collections.sort(mComments, new CommentComparator());
-                        CommentsAdapter ca = (CommentsAdapter) mCommentsListView.getAdapter();
                         comment.put("numUpvotes", 0);
+                        mComments.add(comment);
+                        CommentsAdapter ca = (CommentsAdapter) mCommentsListView.getAdapter();
                         ca.addComment(comment);
                         ca.notifyDataSetChanged();
                     }
                     catch(ParseException e){
                         Log.d(TAG, "bad comment save");
                     }
-
                 }
             }
-        });
+        };
+    }
+
+    private void hideKeyboard() {
+        View focusedView = CommentsActivity.this.getCurrentFocus();
+        if (null != focusedView){
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+        }
     }
 
     private int getNumUpvotes(String commentId) {
@@ -190,7 +202,14 @@ public class CommentsActivity extends Activity{
             commenterCommentTextView.setText(commentText);
             commenterUsernameTextView.setText(username);
             commenterCommentCreatedAtTextView.setText(createdAt);
-            upvoteLinearLayout.setOnClickListener(new View.OnClickListener() {
+            upvoteLinearLayout.setOnClickListener(trySubmitCommentUpvote(comment));
+
+            convertView.setClickable(false);
+            return convertView;
+        }
+
+        private View.OnClickListener trySubmitCommentUpvote(final ParseObject comment) {
+            return new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "upvote clicked");
@@ -211,12 +230,8 @@ public class CommentsActivity extends Activity{
                     }
 
                 }
-            });
-
-            convertView.setClickable(false);
-            return convertView;
+            };
         }
-
 
 
         private boolean hasNotVoted(String userId, String commentId) {
