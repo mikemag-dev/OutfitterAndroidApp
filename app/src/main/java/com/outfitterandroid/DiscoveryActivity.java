@@ -58,19 +58,23 @@ public class DiscoveryActivity extends Activity{
         mArticleSpinner = (Spinner) findViewById(R.id.article_spinner);
         mGenderSubmittedBySpinner = (Spinner) findViewById(R.id.gender_submitted_by_spinner);
 
-        mViewCommentsButton.setOnClickListener(new View.OnClickListener() {
+        mViewCommentsButton.setOnClickListener(viewComments());
+        mLikeButton.setOnClickListener(submitButtonVote());
+        mDislikeButton.setOnClickListener(submitButtonVote());
+        mSubmissionImageView.setOnTouchListener(submitSwipeVote());
+        mArticleSpinner.setOnItemSelectedListener(refreshDiscoverySubmission());
+        mGenderSubmittedBySpinner.setOnItemSelectedListener(refreshDiscoverySubmission());
+    }
+
+    private View.OnClickListener viewComments() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DiscoveryActivity.this, CommentsActivity.class);
                 intent.putExtra(CommentsActivity.EXTRA_SUBMISSION_ID, mCurrentSubmission.getObjectId());
                 startActivity(intent);
             }
-        });
-        mLikeButton.setOnClickListener(submitButtonVote());
-        mDislikeButton.setOnClickListener(submitButtonVote());
-        mSubmissionImageView.setOnTouchListener(submitSwipeVote());
-        mArticleSpinner.setOnItemSelectedListener(refreshDiscoverySubmission());
-        mGenderSubmittedBySpinner.setOnItemSelectedListener(refreshDiscoverySubmission());
+        };
     }
 
     private AdapterView.OnItemSelectedListener refreshDiscoverySubmission() {

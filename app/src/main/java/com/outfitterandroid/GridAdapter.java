@@ -4,6 +4,7 @@ package com.outfitterandroid;
  * Created by angal2 on 3/5/15.
  */
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +31,7 @@ public class GridAdapter extends BaseAdapter{
         // TODO Auto-generated constructor stub
         context=mainActivity;
         this.dataList=data;
-        inflater = ( LayoutInflater )context.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = ( LayoutInflater )context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -71,8 +71,11 @@ public class GridAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 // for testing purposes only
-                Toast.makeText(context, "likes:"+dataList.get(position).getNum_likes()+" dislikes"+dataList.get(position).getNum_dislikes()
-                        , Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "likes:"+dataList.get(position).getNum_likes()+" dislikes"+dataList.get(position).getNum_dislikes(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(context, ViewSubmissionActivity.class);
+                String submissionId = dataList.get(position).getNumSubmissionId();
+                intent.putExtra(ViewSubmissionActivity.EXTRA_SUBMISSION_ID, submissionId);
+                context.startActivity(intent);
             }
         });
 

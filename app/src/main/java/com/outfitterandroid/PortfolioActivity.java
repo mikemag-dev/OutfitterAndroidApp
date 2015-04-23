@@ -70,7 +70,7 @@ public class PortfolioActivity extends Activity{
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if(e != null){
-                    Log.d(TAG, "mulitple image query not working right");
+                    Log.d(TAG, "multiple image query not working right");
                 }
                 byte[] byteArr;
                 Bitmap bmp;
@@ -115,10 +115,12 @@ public class PortfolioActivity extends Activity{
            List<ParseObject> objects= query.find();
            for (ParseObject p: objects)
            {
-               Log.d(TAG,p.getParseFile("image").getUrl() );
+               String submissionId = p.getObjectId();
+               String image_url = p.getParseFile("image").getUrl();
                int dislikes= p.getInt("numDislikes");
                int likes= p.getInt("numLikes");
-               SubmissionStats new_stat= new SubmissionStats(p.getParseFile("image").getUrl(),likes+"",dislikes+"");
+               Log.d(TAG, image_url);
+               SubmissionStats new_stat= new SubmissionStats(submissionId, image_url, likes+"", dislikes+"");
                imageFiles.add(new_stat);
            }
         }
