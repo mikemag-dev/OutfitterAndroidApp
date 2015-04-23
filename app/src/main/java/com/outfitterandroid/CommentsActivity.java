@@ -34,6 +34,7 @@ public class CommentsActivity extends Activity{
     private static final String TAG = "CommentsActivity";
 
     final String COMMENT_EMPTY = "comment text is empty";
+    final String COMMENT_NAUGHTY = "that is a naughty word";
 
     String mSubmissionId;
     List<ParseObject> mComments;
@@ -86,8 +87,8 @@ public class CommentsActivity extends Activity{
                 if (commentText.isEmpty()) {
                     Toast.makeText(CommentsActivity.this, COMMENT_EMPTY, Toast.LENGTH_SHORT).show();
                 }
-                else if (false/* content filter */){
-
+                else if (isNaughty(commentText)){
+                    Toast.makeText(CommentsActivity.this, COMMENT_NAUGHTY, Toast.LENGTH_SHORT).show();
                 }
                 else{
                     mCommentEditText.setText("");
@@ -111,6 +112,20 @@ public class CommentsActivity extends Activity{
                 }
             }
         };
+    }
+
+    private boolean isNaughty(String commentText) {
+        if (commentText.contains("fuck") ||
+                commentText.contains("suck") ||
+                commentText.contains("shit") ||
+                commentText.contains("dick") ||
+                commentText.contains("cock") ||
+                commentText.contains("gay") ||
+                commentText.contains("fag")){
+            return true;
+        }
+        else return false;
+
     }
 
     private void hideKeyboard() {
