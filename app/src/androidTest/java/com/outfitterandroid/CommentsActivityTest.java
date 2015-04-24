@@ -44,17 +44,20 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         Thread.sleep(2000);
     }
 
     public void testDiscoveryViewCommentsOpen() throws InterruptedException {
+        Thread.sleep(2000);
         onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
         onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
         onView(withId(R.id.parse_login_button)).perform(click());
         Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
         Thread.sleep(2000);
@@ -70,6 +73,7 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.profile_discovery_button)).perform(click());
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
         Thread.sleep(2000);
     }
@@ -81,10 +85,23 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
         onView(withId(R.id.comment_edit_text)).perform(typeText("test"));
+    }
+
+    public void testDiscoveryViewComments2() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
+        Thread.sleep(2000);
     }
 
     public void testAddComment() throws InterruptedException {
@@ -94,8 +111,10 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
         onView(withId(R.id.comment_edit_text)).perform(typeText("test"));
         onView(withId(R.id.add_comment_button)).perform(click());
@@ -109,12 +128,32 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
         onView(withId(R.id.comment_edit_text)).perform(typeText("test"));
         onView(withId(R.id.add_comment_button)).perform(click());
+        Thread.sleep(2000);
         onView(withText("test")).check(matches(withText("test")));
+        Thread.sleep(2000);
+    }
+
+    public void testAddComment2() throws InterruptedException {
+        onView(withId(R.id.login_username_input)).perform(typeText(VALID_USERNAME));
+        onView(withId(R.id.login_password_input)).perform(typeText(VALID_PASSWORD));
+        onView(withId(R.id.parse_login_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
+        onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
+        onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
+        onView(withId(R.id.comment_edit_text)).perform(typeText("test2"));
+        onView(withId(R.id.add_comment_button)).perform(click());
         Thread.sleep(2000);
     }
 
@@ -125,8 +164,10 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         Thread.sleep(2000);
         onView(withId(R.id.profile_discovery_button)).check(matches(withText("Discovery")));
         onView(withId(R.id.profile_discovery_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
         onView(withId(R.id.num_upvotes_text_view)).check(matches(withText("2")));
     }
@@ -135,8 +176,10 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.facebook_login)).perform(click());
         Thread.sleep(3000);
         onView(withId(R.id.profile_portfolio_button)).perform(click());
+        Thread.sleep(3000);
         onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(0).
                 onChildView(withId(R.id.imageView1)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
     }
 
@@ -144,20 +187,26 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.facebook_login)).perform(click());
         Thread.sleep(3000);
         onView(withId(R.id.profile_portfolio_button)).perform(click());
+        Thread.sleep(3000);
         onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(0).
                 onChildView(withId(R.id.imageView1)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
     }
 
     public void testPortfolioViewCommentsList() throws InterruptedException {
         onView(withId(R.id.facebook_login)).perform(click());
         Thread.sleep(3000);
         onView(withId(R.id.profile_portfolio_button)).perform(click());
+        Thread.sleep(3000);
         onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(0).
                 onChildView(withId(R.id.imageView1)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
     }
 
@@ -165,10 +214,13 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.facebook_login)).perform(click());
         Thread.sleep(3000);
         onView(withId(R.id.profile_portfolio_button)).perform(click());
+        Thread.sleep(3000);
         onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(0).
                 onChildView(withId(R.id.imageView1)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
         onView(withId(R.id.comment_edit_text)).perform(typeText("test"));
 
@@ -178,13 +230,17 @@ public class CommentsActivityTest extends ActivityInstrumentationTestCase2 {
         onView(withId(R.id.facebook_login)).perform(click());
         Thread.sleep(3000);
         onView(withId(R.id.profile_portfolio_button)).perform(click());
+        Thread.sleep(3000);
         onData(anything()).inAdapterView(withId(R.id.portfolio_view)).atPosition(0).
                 onChildView(withId(R.id.imageView1)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.view_comments_button)).check(matches(withText("View Comments")));
         onView(withId(R.id.view_comments_button)).perform(click());
+        Thread.sleep(2000);
         onView(withId(R.id.add_comment_button)).check(matches(withText("add comment")));
         onView(withId(R.id.comment_edit_text)).perform(typeText("test"));
         onView(withId(R.id.add_comment_button)).perform(click());
+        Thread.sleep(2000);
     }
 
 }
