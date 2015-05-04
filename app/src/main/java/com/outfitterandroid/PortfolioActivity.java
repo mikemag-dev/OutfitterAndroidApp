@@ -30,76 +30,26 @@ public class PortfolioActivity extends Activity{
     private static final String TAG = "PortfolioActivity";
 
 
-    //TODO
+    //create the portfolio grid
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_portfolio);
 
         GridView gridview = (GridView) findViewById(R.id.portfolio_view);
         gridview.setAdapter(new GridAdapter(this,getImageFiles(50)));
-        //ArrayList<Bitmap> test = getThumbnails(5, new Date());
-        //test = null;
+
     }
 
 
+
     /*****************
-    PLEASE READ
-            This function seems to successfully query and receive results, however
-     the "thumbnails" temporary variable is not getting Bitmaps added to it.
-
-     I did not find out about the Parse query adapter until it was too late but that
-     seems to be the better approach.
-    *****************/
-    private ArrayList<Bitmap> getThumbnails(int max, Date takenBeforeDate){
-        final ArrayList<Bitmap> thumbnails = new ArrayList<>();
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Submission");
-        //perhaps not get in background? maybe halt the UI thread before this?
-        query.whereEqualTo("submittedByUser", ParseUser.getCurrentUser().getObjectId());
-        query.whereLessThanOrEqualTo("updatedAt", takenBeforeDate);
-        query.orderByDescending("updatedAt");
-        query.setLimit(max);
-        try {
-            Log.d(TAG, "count: " + Integer.toString(query.count()));
-        }
-        catch (ParseException pe){
-            Log.d(TAG, "mulitple image query not working right");
-        }
-        //do something with local datastore to make it faster
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if(e != null){
-                    Log.d(TAG, "multiple image query not working right");
-                }
-                byte[] byteArr;
-                Bitmap bmp;
-                for (ParseObject p : parseObjects){
-                    try{
-                        byteArr = p.getParseFile("image").getData();
-                        thumbnails.add(BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length));
-                    }
-                    catch (ParseException pe){
-                        Log.d(TAG, "single image query not working right");
-                    }
-                }
-            }
-        });
-        return thumbnails;
-    }
-    /*****************
-     PLEASE READ
-     This function seems to successfully query and receive results, however
-     the "thumbnails" temporary variable is not getting Bitmaps added to it.
-
-     I did not find out about the Parse query adapter until it was too late but that
-     seems to be the better approach.
+    Get images in main thread and use image url to load
      *****************/
     private ArrayList<SubmissionStats> getImageFiles(int max){
         final ArrayList<SubmissionStats> imageFiles = new ArrayList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Submission");
-        //perhaps not get in background? maybe halt the UI thread before this?
+        //do not do this query in background because it can take minutes to show up
         query.whereEqualTo("submittedByUser", ParseUser.getCurrentUser().getObjectId());
 
         query.orderByDescending("updatedAt");
@@ -110,16 +60,18 @@ public class PortfolioActivity extends Activity{
         catch (ParseException pe){
             Log.d(TAG, "mulitple image query not working right");
         }
-        //do something with local datastore to make it faster
+        //do the query in main thread instead of in background
         try {
            List<ParseObject> objects= query.find();
            for (ParseObject p: objects)
            {
+
                String submissionId = p.getObjectId();
+               // get the image url instead of the image because its easier to load without caching
                String image_url = p.getParseFile("image").getUrl();
                int dislikes= p.getInt("numDislikes");
                int likes= p.getInt("numLikes");
-               Log.d(TAG, image_url);
+               // collect the url and the likes and dislikes and make a Submission stats container for it
                SubmissionStats new_stat= new SubmissionStats(submissionId, image_url, likes+"", dislikes+"");
                imageFiles.add(new_stat);
            }

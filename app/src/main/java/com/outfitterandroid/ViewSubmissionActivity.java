@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 /**
  * Created by MaguireM on 4/23/15.
+ * See the sumbmisson details
  */
 public class ViewSubmissionActivity extends Activity {
     public static final String EXTRA_SUBMISSION_ID = "com.android.submissionid";

@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import com.parse.ParseUser;
 
+/**
+ * This class controls the main page and links together the other Activities
+ */
 public class ProfileActivity extends Activity {
 
     public static final String EXTRA_SUBMISSION_BUNDLE = "com.outfitterandroid.submission_photo";
@@ -194,9 +197,6 @@ public class ProfileActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

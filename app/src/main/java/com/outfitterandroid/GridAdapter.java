@@ -2,6 +2,7 @@ package com.outfitterandroid;
 
 /**
  * Created by angal2 on 3/5/15.
+ * This class is the adapter for the Portfolio  page and controls what the user can see
  */
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +25,6 @@ public class GridAdapter extends BaseAdapter{
 
     private static final String TAG = "GridAdapter";
     Context context;
-    PortfolioActivity myActivity;
     ArrayList<SubmissionStats> dataList;
     private static LayoutInflater inflater=null;
     public GridAdapter(PortfolioActivity mainActivity,ArrayList<SubmissionStats> data) {
@@ -52,11 +52,6 @@ public class GridAdapter extends BaseAdapter{
         return position;
     }
 
-    public class Holder
-    {
-        TextView tv;
-        ImageView img;
-    }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView;
@@ -64,14 +59,14 @@ public class GridAdapter extends BaseAdapter{
         rowView = inflater.inflate(R.layout.grid_element,null );
         ImageView imageView=(ImageView) rowView.findViewById(R.id.imageView1);
         Log.d(TAG, dataList.get(position).getUrl());
+        // load the image with picasso image loader, this bypasses local caching
         Picasso.with(context)
                 .load(dataList.get(position).getUrl())
                 .into(imageView);
+        // this is the onClick listener for each of the elements for the grid
         rowView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // for testing purposes only
-                //Toast.makeText(context, "likes:"+dataList.get(position).getNum_likes()+" dislikes"+dataList.get(position).getNum_dislikes(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context, ViewSubmissionActivity.class);
                 String submissionId = dataList.get(position).getNumSubmissionId();
                 intent.putExtra(ViewSubmissionActivity.EXTRA_SUBMISSION_ID, submissionId);

@@ -7,6 +7,7 @@ import com.parse.ParseFacebookUtils;
 
 /**
  * Created by MaguireM on 2/16/15.
+ * class to control login page
  */
 
 public class OutfitterApplication extends Application {

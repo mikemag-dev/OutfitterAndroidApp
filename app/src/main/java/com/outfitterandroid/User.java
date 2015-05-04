@@ -17,6 +17,7 @@ import java.util.GregorianCalendar;
 
 /**
  * Created by MaguireM on 3/2/15.
+ * This is the class that represents the user and controls submissions
  */
 public class User {
     private static final String TAG = "User";

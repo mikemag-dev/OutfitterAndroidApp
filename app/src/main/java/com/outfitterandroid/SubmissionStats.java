@@ -1,7 +1,8 @@
 package com.outfitterandroid;
 
 /**
- * Created by mihir on 4/10/15.
+ * Created by Mihir on 4/10/15.
+ * This is the data container class for the feedback data on a Sumbission
  */
 public class SubmissionStats {
     private String submissionId;

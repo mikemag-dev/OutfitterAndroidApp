@@ -9,6 +9,7 @@ import java.util.Date;
 
 /**
  * Created by MaguireM on 2/23/15.
+ * This is the data container class for the data needed for Sumbmission
  */
 public class Submission {
 
@@ -30,20 +31,6 @@ public class Submission {
     private boolean mToReceiveMaleFeedback = true;
     private boolean mToReceiveFemaleFeedback = true;
 
-    /*public ArrayList<Bitmap> getImageList() {
-        return mImageList;
-    }
-
-    public void setImageList(ArrayList<Bitmap> mImageList) {
-        this.mImageList = mImageList;
-    }
-
-    public void addImage(Bitmap mImage) {
-        if (null == mImage){
-            mImageList = new ArrayList<Bitmap>();
-        }
-        mImageList.add(mImage);
-    }*/
 
     public Date getCreatedAt() {
         return mCreatedAt;

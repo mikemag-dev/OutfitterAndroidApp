@@ -25,12 +25,12 @@ import java.io.IOException;
 
 /**
  * Created by MaguireM on 2/23/15.
+ * This class controls the submission activity page
  */
 public class SubmissionActivity extends Activity {
     private static final String TAG = "SubmissionActivity";
     private static final String ALREADY_SUBMITTED_PRIORITY_SUBMISSION_TODAY = "Already submitted priority submission today!";
 
-    //private String mCurrentPhotoPath;
     private Bitmap mPhotoBitmap;
     private Submission mCurrentSubmission;
     private ParseUser mCurrentUser;
@@ -40,6 +40,7 @@ public class SubmissionActivity extends Activity {
     private RadioGroup mAudienceRadioGroup;
     private CheckBox mIsPriorityCheckBox;
     private Button mSubmitButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +77,12 @@ public class SubmissionActivity extends Activity {
         mIsPriorityCheckBox.setOnCheckedChangeListener(updateSubmissionIsPrioritySubmission());
         mSubmitButton.setOnClickListener(submitSubmission());
     }
-
+    // get image preview
     private Bitmap getScaledImagePreview(Bitmap capturedImage) {
         double scaleFactor;
         Matrix m  = new Matrix();
         m.postRotate(90);
         capturedImage = Bitmap.createBitmap(capturedImage, 0, 0, capturedImage.getWidth(), capturedImage.getHeight(), m, true);
-
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -142,7 +142,6 @@ public class SubmissionActivity extends Activity {
         return new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d("wtwtf", Boolean.toString(User.hasSubmittedPrioritySubmissionToday(mCurrentUser)));
                 if(isChecked && User.hasSubmittedPrioritySubmissionToday(mCurrentUser)){
                     Toast.makeText(SubmissionActivity.this, ALREADY_SUBMITTED_PRIORITY_SUBMISSION_TODAY, Toast.LENGTH_SHORT).show();
                     buttonView.setChecked(false);

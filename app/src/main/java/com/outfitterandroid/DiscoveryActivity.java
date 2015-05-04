@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 /**
  * Created by MaguireM on 3/16/15.
+ * this class controls the Discovery page and collects the user feedback
  */
 public class DiscoveryActivity extends Activity{
 
