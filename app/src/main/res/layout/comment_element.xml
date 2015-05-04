@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="400dp"
     android:orientation="horizontal">
-
+    <!-- this one of the elements in the comment list,
+    it contains an upvote arrow and comment info-->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -22,7 +23,7 @@
                 android:scaleType="centerCrop"
                 android:clickable="false"
                 />
-
+        <!-- the arrow button-->
             <TextView
                 android:id="@+id/num_upvotes_text_view"
                 android:layout_width="match_parent"
@@ -39,20 +40,20 @@
         android:layout_weight="8"
         android:gravity="center_vertical"
         android:orientation="vertical">
-
+        <!--actual comment -->
         <TextView
             android:id="@+id/commenter_comment_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        <!--  username info-->
         <TextView
             android:id="@+id/commenter_username_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Small Text" />
-
+        <!-- timestamp  -->
         <TextView
             android:id="@+id/commenter_created_at_text_view"
             android:layout_width="wrap_content"

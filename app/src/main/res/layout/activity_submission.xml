@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!-- the various menus associated with making a Submission -->
 
     <ImageView
         android:layout_width="match_parent"
@@ -10,7 +11,9 @@
         android:layout_weight="1"
         android:id="@+id/submission_image_view"
         android:layout_gravity="center_horizontal" />
+
     <LinearLayout
+
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -21,6 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
+            <!--select article radio group -->
             <RadioGroup
                 android:id="@+id/article_selection_radio_group"
                 android:layout_width="match_parent"
@@ -78,7 +82,7 @@
                         android:layout_marginLeft="30dp"
                         android:layout_weight="1" />
                 </RadioGroup>
-
+            <!-- target audience group-->
             <RadioGroup
                 android:id="@+id/audience_selection_radio_group"
                 android:layout_width="match_parent"
@@ -130,7 +134,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp">
 
-
+            <!-- priority Sumbmission text -->
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,7 +143,7 @@
                 android:layout_alignParentTop="true"
                 android:paddingBottom="30dp" />
 
-
+            <!-- add description text field -->
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,7 +154,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:hint="@string/submission_description_hint" />
-
+            <!-- Submit button-->
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

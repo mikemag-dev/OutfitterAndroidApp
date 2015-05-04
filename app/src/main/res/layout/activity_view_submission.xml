@@ -3,12 +3,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!-- layout to view the Submission information-->
+    <!-- the image -->
     <ImageView
+
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="6"
         android:id="@+id/discovery_image_view"
         android:layout_gravity="center_horizontal" />
+    <!-- view comments button-->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,12 +20,14 @@
         android:id="@+id/view_comments_button"
         android:background="@drawable/button_shape_default"
         android:layout_gravity="center_horizontal" />
+    <!--textviews to display information about article -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/displayed_article_text_view"
         android:layout_gravity="center_horizontal" />
+    <!--textviews to display information about gender -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

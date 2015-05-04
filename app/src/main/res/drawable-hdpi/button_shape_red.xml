@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- this is the shape and color of the dislike button -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle" android:padding="10dp">
     <solid android:color="#ae3a3c"/> <!-- this one is ths color of the Rounded Button -->
