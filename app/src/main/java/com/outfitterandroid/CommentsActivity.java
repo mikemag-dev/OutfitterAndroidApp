@@ -28,6 +28,11 @@ import java.util.List;
 
 /**
  * Created by MaguireM on 4/22/15.
+ *
+ * This class involves functionality for commenting. Has a comments adapter for the customized
+ * comment item view. Also has a comparator by which to sort the comments. By defualt it sorts
+ * most upvotes to least upvotes and then least recent to most recent.
+ *
  */
 public class CommentsActivity extends Activity{
     public static final String EXTRA_SUBMISSION_ID = "com.outfitterandroid.submissionId";
@@ -103,7 +108,6 @@ public class CommentsActivity extends Activity{
                         comment.put("numUpvotes", 0);
                         mComments.add(comment);
                         CommentsAdapter ca = (CommentsAdapter) mCommentsListView.getAdapter();
-                        ca.addComment(comment);
                         ca.notifyDataSetChanged();
                     }
                     catch(ParseException e){
@@ -264,9 +268,7 @@ public class CommentsActivity extends Activity{
             }
         }
 
-        public void addComment(ParseObject comment) {
-            mComments.add(comment);
-        }
+
 
         @Override
         public void notifyDataSetChanged() {
