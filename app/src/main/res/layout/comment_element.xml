@@ -48,6 +48,8 @@
             android:text="Large Text"
             android:textAppearance="?android:attr/textAppearanceLarge" />
         <!--  username info-->
+
+
         <TextView
             android:id="@+id/commenter_username_text_view"
             android:layout_width="wrap_content"
@@ -60,4 +62,12 @@
             android:layout_height="wrap_content"
             android:text="Small Text" />
     </LinearLayout>
+    <!-- delete comment button  -->
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remove_comment_button_text"
+        android:id="@+id/delete_comment_button"
+        android:layout_gravity="right" />
 </LinearLayout>
