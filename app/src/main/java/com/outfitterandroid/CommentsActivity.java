@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -63,6 +64,11 @@ public class CommentsActivity extends Activity{
         mAddCommentButton.setOnClickListener(addComment());
     }
 
+    /**
+     * private function return
+     * @return a list of parse objects representing the comments associated with
+     * the current submission
+     */
     private List<ParseObject> getComments() {
         List<ParseObject> comments = null;
         try {
@@ -79,6 +85,11 @@ public class CommentsActivity extends Activity{
         return comments;
     }
 
+    /**
+     * @param comments list of comments to be sorted
+     * @return comments sorted first by number of upvotes then in chronological order from
+     * least recent to most
+     */
     private List<ParseObject> sortComments(List<ParseObject> comments) {
         if (null != comments) Collections.sort(comments, new CommentComparator());
         return comments;
@@ -118,6 +129,10 @@ public class CommentsActivity extends Activity{
         };
     }
 
+    /**
+     * @param commentText text to be analyze
+     * @return true if comment text contains word from prohibited list
+     */
     private boolean isNaughty(String commentText) {
         if (commentText.contains("fuck") ||
                 commentText.contains("suck") ||
@@ -132,6 +147,9 @@ public class CommentsActivity extends Activity{
 
     }
 
+    /**
+     * hides on screen keyboard
+     */
     private void hideKeyboard() {
         View focusedView = CommentsActivity.this.getCurrentFocus();
         if (null != focusedView){
@@ -158,11 +176,20 @@ public class CommentsActivity extends Activity{
         private static final String TAG = "CommentsAdapter";
 
         String mSubmissionId;
+        ParseObject mSubmission;
         List<ParseObject> mComments;
 
 
         public CommentsAdapter(String submissionId, List<ParseObject> comments) {
             mSubmissionId = submissionId;
+            try{
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Submission");
+                query.whereEqualTo("submissionId", mSubmissionId);
+                mSubmission = query.getFirst();
+            }
+            catch (ParseException e){
+                Log.d(TAG, String.format("bad submissionId %s", submissionId));
+            }
             mComments = comments;
         }
 
@@ -187,10 +214,12 @@ public class CommentsActivity extends Activity{
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             if (null == convertView){
                 convertView = getLayoutInflater().inflate(R.layout.comment_element, null);
             }
+
+            Button deleteCommentButton = (Button) convertView.findViewById(R.id.delete_comment_button);
 
             //collect data
             final ParseObject comment = (ParseObject) getItem(position);
@@ -222,9 +251,43 @@ public class CommentsActivity extends Activity{
             commenterUsernameTextView.setText(username);
             commenterCommentCreatedAtTextView.setText(createdAt);
             upvoteLinearLayout.setOnClickListener(trySubmitCommentUpvote(comment));
+            //don't show delete button if user not authorized to delete
+            if (isAuthorizedToDelete(comment)){
+                deleteCommentButton.setOnClickListener(tryDeleteComment(position, comment));
+            }
+            else{
+                deleteCommentButton.setVisibility(View.INVISIBLE);
+            }
+
 
             convertView.setClickable(false);
             return convertView;
+        }
+
+        private View.OnClickListener tryDeleteComment(final int position, final ParseObject comment) {
+            return new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        comment.delete();
+                        mComments.remove(position);
+                        notifyDataSetChanged();
+                    }
+                    catch (ParseException e){
+                        Log.d(TAG, "could not delete comment");
+                    }
+                }
+            };
+        }
+
+        private boolean isAuthorizedToDelete(ParseObject comment) {
+            ParseUser curUser = ParseUser.getCurrentUser();
+            if (comment.getString("userId").equals(curUser.getObjectId())||
+                mSubmission.getString("submittedByUser").equals(curUser.getObjectId())||
+                mSubmission.getString("submittedByUser").equals(curUser.getString("name"))) {
+                return true;
+            }
+            return false;
         }
 
         private View.OnClickListener trySubmitCommentUpvote(final ParseObject comment) {
@@ -253,6 +316,13 @@ public class CommentsActivity extends Activity{
         }
 
 
+        /**
+         *
+         * @param userId
+         * @param commentId
+         * @return returns true if user has not submitted an upvote for the comment
+         * he or she is attempting to upvote
+         */
         private boolean hasNotVoted(String userId, String commentId) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("CommentActivity");
             query.whereEqualTo("commentId", commentId);
