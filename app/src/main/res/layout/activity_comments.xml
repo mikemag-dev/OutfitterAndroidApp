@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="@string/add_comment_button_text"
+            android:background="@drawable/button_shape_default"
             android:id="@+id/add_comment_button" />
 
     </LinearLayout>

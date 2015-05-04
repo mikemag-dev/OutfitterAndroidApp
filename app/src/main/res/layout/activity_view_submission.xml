@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/comments_button_text"
         android:id="@+id/view_comments_button"
+        android:background="@drawable/button_shape_default"
         android:layout_gravity="center_horizontal" />
     <TextView
         android:layout_width="wrap_content"
